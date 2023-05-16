@@ -1,0 +1,11 @@
+selectors:
+  - name: everything_except_failure_tests
+    description: "All nodes except that might be tested in the failure tests"
+    default: true
+    definition:
+      union:
+        - method: fqn
+          value: "*"
+        - exclude:
+            - method: fqn
+              value: failure_tests
