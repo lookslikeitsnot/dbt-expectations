@@ -8,28 +8,35 @@ sources:
       tests :
        - dbt_expectations.expect_table_row_count_to_equal_other_table:
                compare_model: ref('data_text')
-               compare_row_condition: "email_address !~ '%[^.]*'"              
+               compare_row_condition: >
+                email_address not like '%{{ '\\\\' if target.type == 'bigquery' else '^' }}%%' 
+                {{ ' ' if target.type == 'bigquery' else 'escape \'^\'' }}           
                row_condition: "1=1"      
       # values are stored b4b9840924c5c3e876fc0ade7e089cd3
     - name: dbt_expectations_expect_column_b4b9840924c5c3e876fc0ade7e089cd3
       tests :
          - dbt_expectations.expect_table_row_count_to_equal_other_table:
                compare_model: ref('data_text')
-               compare_row_condition: "email_address ~ '[^.]*@'"              
+               compare_row_condition: "email_address like '%@%'"              
                row_condition: "1=1"           
           # values are stored f674e5dfe4d52219da8040028b6cdb19
     - name: dbt_expectations_expect_column_f674e5dfe4d52219da8040028b6cdb19
       tests :
        - dbt_expectations.expect_table_row_count_to_equal_other_table:
                compare_model: ref('data_text')
-               compare_row_condition: "not (email_address ~ '%[^.]*' or email_address ~ '&[^.]*')"              
+               compare_row_condition: >
+                not (
+                  email_address like '%{{ '\\\\' if target.type == 'bigquery' else '^' }}%%' 
+                  {{ ' ' if target.type == 'bigquery' else 'escape \'^\'' }} 
+                  or email_address like '%&%'
+                  )             
                row_condition: "1=1"      
       # values are stored 70f3f57594dd0b48f023ff721af3543d
     - name: dbt_expectations_expect_column_70f3f57594dd0b48f023ff721af3543d
       tests :
        - dbt_expectations.expect_table_row_count_to_equal_other_table:
                compare_model: ref('data_text')
-               compare_row_condition: "not (email_address !~ '[^.]*@' or email_address !~ '@[^.]*')"              
+               compare_row_condition: "not (email_address not like '%@%' or email_address not like '%@%')"              
                row_condition: "1=1"
       # values are stored 4429ac830680fbacf3f79efc3b9e563a
     - name: dbt_expectations_expect_column_4429ac830680fbacf3f79efc3b9e563a
