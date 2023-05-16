@@ -19,25 +19,24 @@
 {%- endmacro %}
 
 {% macro default__expression_is_true(model, expression, test_condition, group_by_columns, row_condition) -%}
-    {% set aggregations_pattern = '(avg\(.*\))|(count\(.*\))|(max\(.*\))|(min\(.*\))|(sum\(.*\))|(stddev\(.*\))' %}
+    {# Check if the query is an aggregation by finding matching operator followed by balanced parentheses #}
+    {% set aggregations_pattern = '(avg|count|max|min|stddev|sum)\((?:[^)(]|\((?:[^)(]|\((?:[^)(]|\([^)(]*\))*\))*\))*\)' %}
     {% set re = modules.re %}
     {% set inline_expression = re.sub('\s{2,}|\n', " ", expression) %}
-    {% set is_aggregation = re.search(aggregations_pattern, inline_expression, re.IGNORECASE) %}
-    {%- if should_store_failures() -%}
-    {{ exceptions.warn(
-            "expression : " ~ inline_expression
-    ) }}
-    {{ log('group by columns: ' ~ group_by_columns)}}
-    {{ log('is aggregation: ' ~ is_aggregation)}}
-    {% endif %}
+    {% set aggregation_matches = re.search(aggregations_pattern, inline_expression, re.IGNORECASE) %}
 with grouped_expression as (
     select
         {% if group_by_columns %}
         {% for group_by_column in group_by_columns -%}
         {{ group_by_column }} as col_{{ loop.index }},
         {% endfor -%}
-        {# if is_aggregation, don not get any extra information #}
-        {% elif is_aggregation %}
+        {# if expression contains aggregations, display aggregated column(s) #}
+        {% elif aggregation_matches and should_store_failures() %}
+        {% set all_aggregation_matches = re.finditer(aggregations_pattern, inline_expression, re.IGNORECASE) %}
+        {% for aggregation_matches in all_aggregation_matches -%}
+        {% set aggregation_column_name = (aggregation_matches.group(0) | replace('(', '_')| replace(')', '_')| replace('.', '_')| replace(' ', '_')| replace('*', 'star')) %}
+        {{ aggregation_matches.group(0) }}  as col_{{ loop.index }}_{{aggregation_column_name}},
+        {% endfor -%}
         {# if storing failures, store full model if not grouping #}
         {% elif should_store_failures() %}
         model_.*,
