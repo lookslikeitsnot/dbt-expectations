@@ -25,7 +25,7 @@
 
 {%- set row_condition_ext -%}
 
-    {%- if row_condition  %}
+    {%- if row_condition %}
     {{ row_condition }} and
     {% endif -%}
 
@@ -34,10 +34,9 @@
 {%- endset -%}
 
 with validation_errors as (
-
     select
         {% for column in columns -%}
-        {{ column }}{% if not loop.last %},{% endif %}
+        {{ column }} as col_{{ loop.index }} {% if not loop.last %},{% endif %}
         {%- endfor %}
     from {{ model }}
     where
@@ -52,7 +51,23 @@ with validation_errors as (
     having count(*) > 1
 
 )
+{# if storing failures, emit all columns from the model #}
+{% if should_store_failures() %}
+select model_.* 
+from {{ model }} model_
+join validation_errors ve
+on 
+{% for column in columns -%}
+model_.{{ column }} = ve.col_{{ loop.index }} {% if not loop.last %} and {% endif %}
+{%- endfor %} 
+where
+    ve is not null
+    {%- if row_condition_ext %}
+        and {{ row_condition_ext }}
+    {% endif %}
+{% else %}
 select * from validation_errors
+{% endif %}
 {% endtest %}
 
 

@@ -133,7 +133,7 @@ sources:
       - name: dbt_expectations_expect_compou_28570c72b44e2dcf4eedbd31dcef5f0c
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
-              value: 1
+              value: 2
         # values are stored row_count_to_equal_data_test__4
       - name: dbt_expectations_expect_table_row_count_to_equal_data_test__4
         tests:
@@ -230,7 +230,7 @@ sources:
       - name: dbt_expectations_expect_column_683340919b30c10769325ec1dc2f5443
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
-              value: 1
+              value: 2
         # values are stored da3f47cfcf69ebfd61e7a593b71bddde
       - name: dbt_expectations_expect_column_da3f47cfcf69ebfd61e7a593b71bddde
         tests:
