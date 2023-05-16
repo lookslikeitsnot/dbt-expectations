@@ -57,6 +57,7 @@ jobs:
           command: |
             . venv/bin/activate
             dbt build -t postgres --project-dir $DBT_PROJECT_DIR
+            dbt build -t postgres --project-dir $DBT_PROJECT_DIR --select failure_tests
 
       - run:
           name: "Set up GCP credentials"
@@ -69,12 +70,14 @@ jobs:
           command: |
             . venv/bin/activate
             dbt build -t bigquery --project-dir $DBT_PROJECT_DIR
+            dbt build -t bigquery --project-dir $DBT_PROJECT_DIR --select failure_tests
 
       - run:
           name: "Run Tests - Snowflake"
           command: |
             . venv/bin/activate
             dbt build -t snowflake --project-dir $DBT_PROJECT_DIR
+            dbt build -t snowflake --project-dir $DBT_PROJECT_DIR --select failure_tests
 
       - store_artifacts:
           path: ./logs
