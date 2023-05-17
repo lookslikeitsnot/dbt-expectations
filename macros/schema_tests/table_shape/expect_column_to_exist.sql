@@ -22,7 +22,7 @@
 
         select
             cast('{{ column_name }}' as {{ dbt.type_string() }}) as column_name,
-            {{ matching_column_index }} as matching_column_index,
+            {{ matching_column_index + 1 }} as matching_column_index,
             {{ column_index_matches }} as column_index_matches
 
     )

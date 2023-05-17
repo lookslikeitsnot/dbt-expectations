@@ -811,6 +811,7 @@ models:
           - dbt_expectations.expect_column_stdev_to_be_between:
               min_value: -10
               max_value: -2
+              tags: [failing_test]
               config:
                 store_failures: true
                 severity: warn
