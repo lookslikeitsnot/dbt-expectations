@@ -36,9 +36,18 @@ validation_errors as (
         join
         set_values s on v.value_field = s.value_field
 
+),
+verbose_validation_errors as (
+    select model_.* 
+    from {{ model }} model_
+    where model_.{{column_name}} in (select * from validation_errors)
+   
 )
-
-select *
-from validation_errors
+select * from 
+{% if should_store_failures() -%}
+    verbose_validation_errors
+{%- else -%}
+    validation_errors
+{%- endif -%}
 
 {% endtest %}

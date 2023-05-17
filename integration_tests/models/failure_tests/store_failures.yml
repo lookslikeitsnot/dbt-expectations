@@ -401,15 +401,25 @@ sources:
               value: 2
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_test')
+        # expect all rows not in value set, for all model columns
         # values are stored 14f59b141efceb67d36cefd63fb4bd37
       - name: dbt_expectations_expect_column_14f59b141efceb67d36cefd63fb4bd37
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
               compare_model: ref('data_test')
+              compare_row_condition: "not (col_string_a in ('2','3'))"
+              row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_test')
+        # expect all rows in value set, for all model columns
         # values are stored 50848af8004898557c3b0ab39c9f96e7
       - name: dbt_expectations_expect_column_50848af8004898557c3b0ab39c9f96e7
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
+              compare_model: ref('data_test')
+              compare_row_condition: "col_string_a in ('a', 'b', 'c')"
+              row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_test')
         # values are stored c01780bae9e50480f7d344195bc45ba4
       - name: dbt_expectations_expect_column_c01780bae9e50480f7d344195bc45ba4
