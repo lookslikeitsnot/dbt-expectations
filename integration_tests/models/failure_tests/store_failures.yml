@@ -12,6 +12,8 @@ sources:
                 email_address not like '%{{ '\\\\' if target.type == 'bigquery' else '^' }}%%' 
                 {{ ' ' if target.type == 'bigquery' else 'escape \'^\'' }}
               row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_text')
         # values are stored b4b9840924c5c3e876fc0ade7e089cd3
       - name: dbt_expectations_expect_column_b4b9840924c5c3e876fc0ade7e089cd3
         tests:
@@ -19,6 +21,8 @@ sources:
               compare_model: ref('data_text')
               compare_row_condition: "email_address like '%@%'"
               row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_text')
             # values are stored f674e5dfe4d52219da8040028b6cdb19
       - name: dbt_expectations_expect_column_f674e5dfe4d52219da8040028b6cdb19
         tests:
@@ -31,6 +35,8 @@ sources:
                   or email_address like '%&%'
                   )
               row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_text')
         # values are stored 70f3f57594dd0b48f023ff721af3543d
       - name: dbt_expectations_expect_column_70f3f57594dd0b48f023ff721af3543d
         tests:
@@ -38,6 +44,8 @@ sources:
               compare_model: ref('data_text')
               compare_row_condition: "not (email_address not like '%@%' or email_address not like '%@%')"
               row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_text')
         # values are stored 4429ac830680fbacf3f79efc3b9e563a
       - name: dbt_expectations_expect_column_4429ac830680fbacf3f79efc3b9e563a
         tests:
@@ -45,6 +53,8 @@ sources:
               compare_model: ref('data_text')
               compare_row_condition: "not (email_address like '%@@%')"
               row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_text')
         # values are stored 9ebeef47a6253273bb16ea1fb555f3d4
       - name: dbt_expectations_expect_column_9ebeef47a6253273bb16ea1fb555f3d4
         tests:
@@ -52,6 +62,8 @@ sources:
               compare_model: ref('data_text')
               compare_row_condition: "not (email_address not like '%%')"
               row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_text')
         # values are stored a46176829897335ef5b484ce3e7639c6
       - name: dbt_expectations_expect_column_a46176829897335ef5b484ce3e7639c6
         tests:
@@ -59,6 +71,8 @@ sources:
               compare_model: ref('data_text')
               compare_row_condition: "not (email_address like '%#%' or email_address like '%&%')"
               row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_text')
         # values are stored 089145ee8260c6403493de6d16d18f6d
       - name: dbt_expectations_expect_column_089145ee8260c6403493de6d16d18f6d
         tests:
@@ -66,156 +80,218 @@ sources:
               compare_model: ref('data_text')
               compare_row_condition: "not (email_address not like '%@%' or email_address not like '%@%')"
               row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_text')
         # values are stored 3bd6bcfa1e483bf563d0c6b6ff125548
       - name: dbt_expectations_expect_table__3bd6bcfa1e483bf563d0c6b6ff125548
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 8
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 4
         # values are stored 6029c8216b74899244b808c16a83c95e
       - name: dbt_expectations_expect_column_6029c8216b74899244b808c16a83c95e
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 4
         # values are stored c156bf23e00131cf1e530433ab681fef
       - name: dbt_expectations_expect_row_va_c156bf23e00131cf1e530433ab681fef
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 3
         # values are stored 252ae16f60f705db85ba7e3cdf93dd8c
       - name: dbt_expectations_expect_row_va_252ae16f60f705db85ba7e3cdf93dd8c
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('timeseries_data')
         # values are stored aa2f35c87625a42aa8f95fde5849e2f6
       - name: dbt_expectations_expect_column_aa2f35c87625a42aa8f95fde5849e2f6
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 2
         # values are stored 67235c57a1e55a762011593efba42b12
       - name: dbt_expectations_expect_column_67235c57a1e55a762011593efba42b12
         tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
               min_value: 10
               max_value: "(select count(*) from {{ref('timeseries_data')}})"
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 3
         # values are stored 50ff354a7d05e4ab267e187b30a31282
       - name: dbt_expectations_expect_column_50ff354a7d05e4ab267e187b30a31282
         tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
               min_value: 10
               max_value: "(select count(*) from {{ref('timeseries_data')}})"
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 5
         # values are stored 358fc6ef8e5314e8f961d04fb0e0d443
       - name: dbt_expectations_expect_column_358fc6ef8e5314e8f961d04fb0e0d443
         tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
               min_value: 3
               max_value: "(select count(*) from {{ref('timeseries_data')}})"
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 8
         # values are stored a2801f8e4aa53181f19a858008276d76
       - name: dbt_expectations_expect_table__a2801f8e4aa53181f19a858008276d76
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 4
         # values are stored 6a0ca8675c186627894f397e6af82160
       - name: dbt_expectations_expect_column_6a0ca8675c186627894f397e6af82160
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 2
         # values are stored 96846a820a22f54463c2b71ef9cb339a
       - name: dbt_expectations_expect_column_96846a820a22f54463c2b71ef9cb339a
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
+              value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
               value: 1
         # values are stored bca42b761f1bfba2a0464d6c2c382400
       - name: dbt_expectations_expect_column_bca42b761f1bfba2a0464d6c2c382400
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 1
         # values are stored 28570c72b44e2dcf4eedbd31dcef5f0c
       - name: dbt_expectations_expect_compou_28570c72b44e2dcf4eedbd31dcef5f0c
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 2
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_test')
         # values are stored row_count_to_equal_data_test__4
       - name: dbt_expectations_expect_table_row_count_to_equal_data_test__4
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
+              value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
               value: 1
         # values are stored 6a676b6265533cbfb045f2e0c76d7fb4
       - name: dbt_expectations_expect_table__6a676b6265533cbfb045f2e0c76d7fb4
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 2
         # values are stored 830445dfcdfe97274bbaaebe666a49f9
       - name: dbt_expectations_expect_table__830445dfcdfe97274bbaaebe666a49f9
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 4
         # values are stored 5d8af86142e455acf893fdb79954e8d5
       - name: dbt_expectations_expect_table__5d8af86142e455acf893fdb79954e8d5
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 2
         # values are stored 7b683c0fd621761bf32ea9c77a1207cd
       - name: dbt_expectations_expect_table__7b683c0fd621761bf32ea9c77a1207cd
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 3
         # values are stored 3342f886eb20425d4023c50b6c264cc5
       - name: dbt_expectations_expect_table__3342f886eb20425d4023c50b6c264cc5
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
+              value: 2
+          - dbt_expectations.expect_table_column_count_to_equal:
               value: 2
         # values are stored a58aba93ddbbbe366e3944db925de93b
       - name: dbt_expectations_expect_table__a58aba93ddbbbe366e3944db925de93b
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 10
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 2
         # values are stored 16229538390f70e3c4e0ef33f51f7126
       - name: dbt_expectations_expect_table__16229538390f70e3c4e0ef33f51f7126
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 16
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 4
         # values are stored c0a3de97b1f744c65e3d2e715bed42d7
       - name: dbt_expectations_expect_table__c0a3de97b1f744c65e3d2e715bed42d7
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 2
         # values are stored 5fc27ea873e18b1e9ddc0a7aa6dbcd77
       - name: dbt_expectations_expect_table__5fc27ea873e18b1e9ddc0a7aa6dbcd77
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
+              value: 2
+          - dbt_expectations.expect_table_column_count_to_equal:
               value: 2
         # values are stored 2b3df2f34bfbadac00cbf5c1d2fc43b9
       - name: dbt_expectations_expression_is_2b3df2f34bfbadac00cbf5c1d2fc43b9
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
               compare_model: ref('data_test')
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_test')
         # values are stored eac1c69bfe238e77061867aa8fe4bc02
       - name: dbt_expectations_equal_express_eac1c69bfe238e77061867aa8fe4bc02
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
               compare_model: ref('data_test')
+          - dbt_expectations.expect_table_column_count_to_equal:
+              value: 5
         # values are stored 31eeee5db90e215e53b91d7802a0ea4a
       - name: dbt_expectations_expect_column_31eeee5db90e215e53b91d7802a0ea4a
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
+              compare_model: ref('data_test')
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_test')
         # values are stored 59560feb2fa77921ad441cae8ab09d72
       - name: dbt_expectations_expect_column_59560feb2fa77921ad441cae8ab09d72
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
               compare_model: ref('data_test')
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_test')
         # values are stored fbceee675139638784e5eac9adc73339
       - name: dbt_expectations_expect_column_fbceee675139638784e5eac9adc73339
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
               compare_model: ref('data_test')
-              factor: .5
+              compare_row_condition: "not (col_numeric_a = col_numeric_b)"
+              row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_test')
         # values are stored 7ef8e1ed87e706f35aa7290c74f52dc0
       - name: dbt_expectations_expect_select_7ef8e1ed87e706f35aa7290c74f52dc0
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
               compare_model: ref('data_test')
-              factor: .5
+              compare_row_condition: "not (col_numeric_a = col_numeric_b)"
+              row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_test')
         # values are stored fd100321a81851ad272526f368d35013
       - name: dbt_expectations_expect_multic_fd100321a81851ad272526f368d35013
         tests:

@@ -37,37 +37,57 @@
 
 {%- endset -%}
 
-with column_values as (
-
+with indexed_filtered_model as (
     select
         row_number() over(order by 1) as row_index,
+        model_.*
+    from {{ model }} model_
+    where
+        1=1 
+    {%- if row_condition_ext %}
+        and {{ row_condition_ext }}
+    {%- endif -%}
+
+),
+column_values as (
+    select
+        row_index,
         {% for column in columns -%}
         {{ column }}{% if not loop.last %},{% endif %}
         {%- endfor %}
-    from {{ model }}
-    where
-        1=1
-    {%- if row_condition_ext %}
-        and {{ row_condition_ext }}
-    {% endif %}
-
+    from indexed_filtered_model
 ),
 unpivot_columns as (
-
     {% for column in columns %}
     select row_index, '{{ column }}' as column_name, {{ column }} as column_value from column_values
     {% if not loop.last %}union all{% endif %}
     {% endfor %}
 ),
-validation_errors as (
-
+non_unique_values as (
     select
         row_index,
         count(distinct column_value) as column_values
     from unpivot_columns
     group by 1
     having count(distinct column_value) < {{ columns | length }}
-
+),
+validation_errors as (
+{%- if should_store_failures() -%}
+{%- set relation_column_names = dbt_expectations._get_column_list(model, "upper") -%}
+    select
+    {%- for relation_column_name in relation_column_names %}
+    tv.{{relation_column_name}}{% if not loop.last %}, {% endif %}
+    {%- endfor %}
+    from  indexed_filtered_model tv
+    join non_unique_values nuv
+    on
+        tv.row_index = nuv.row_index
+    where nuv is not null
+{%- else -%}
+    select
+        *
+    from non_unique_values
+{%- endif -%}
 )
 select * from validation_errors
 {% endmacro %}
