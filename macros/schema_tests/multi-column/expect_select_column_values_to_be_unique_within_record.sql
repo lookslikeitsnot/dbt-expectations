@@ -73,10 +73,10 @@ non_unique_values as (
 ),
 validation_errors as (
 {%- if should_store_failures() -%}
-{%- set relation_column_names = dbt_expectations._get_column_list(model, "upper") -%}
+{%- set model_column_names = dbt_expectations._get_column_list(model, "upper") -%}
     select
-    {%- for relation_column_name in relation_column_names %}
-    tv.{{relation_column_name}}{% if not loop.last %}, {% endif %}
+    {%- for model_column_name in model_column_names %}
+    tv.{{model_column_name}}{% if not loop.last %}, {% endif %}
     {%- endfor %}
     from  indexed_filtered_model tv
     join non_unique_values nuv

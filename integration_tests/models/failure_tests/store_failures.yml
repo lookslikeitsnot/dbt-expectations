@@ -491,18 +491,41 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_test')
+        # expect 1 row with at least columns containing metadata for the 2 tables
         # values are stored 10c6fb9b520d55aeccfe157038c088cb
       - name: dbt_expectations_expect_table__10c6fb9b520d55aeccfe157038c088cb
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 2
+        # expect rows for all group that don't have data in the future, 
+        # with at least a group id and the max column value
         # values are stored 5cd0609947ef37a954a97ba4b0f9a696
       - name: dbt_expectations_expect_groupe_5cd0609947ef37a954a97ba4b0f9a696
         tests:
-          - dbt_expectations.expect_table_row_count_to_equal:
-              value: 4
+          - dbt_expectations.expect_table_row_count_to_equal_other_table:
+              compare_model: ref('timeseries_data_grouped')
+              compare_row_condition: not (date_timestamp > now())
+              row_condition: "1=1"
+              compare_group_by: [group_id]
+              group_by: [group_id]
+              factor: 1/3670
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 2
+        # expect all unordered rows in windows, for all model columns
         # values are stored 3c87a2adb0955d0e55f2d18e9536f40b
       - name: dbt_expectations_expect_column_3c87a2adb0955d0e55f2d18e9536f40b
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 2
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('timeseries_data_grouped')
+        # expect all unordered rows in windows, for all model columns
+        # values are stored 1bea8a96eeb4ae8c4c65724604a7271f
+      - name: dbt_expectations_expect_column_1bea8a96eeb4ae8c4c65724604a7271f
+        tests:
+          - dbt_expectations.expect_table_row_count_to_equal:
+              value: 2
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('timeseries_data_grouped')

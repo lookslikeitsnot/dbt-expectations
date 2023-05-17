@@ -942,7 +942,6 @@ models:
             # expect column distinct values to not contain set, [should store failing rows](#217ad937606b61f2d304371afdcd55f9) 
           - dbt_expectations.expect_column_distinct_values_to_contain_set:
               value_set: ['d','e']
-              tags: [failing_test]
               config:
                 store_failures: true
                 severity: warn
@@ -1031,7 +1030,7 @@ models:
           timestamp_column: date_timestamp
           datepart: day
           interval: 1
-        # expect column to not have recent data with negative interval, [should store failing rows](#5cd0609947ef37a954a97ba4b0f9a696) 
+        # expect groups to not have recent data with negative interval, [should store failing rows](#5cd0609947ef37a954a97ba4b0f9a696) 
       - dbt_expectations.expect_grouped_row_values_to_have_recent_data:
           group_by: [group_id]
           timestamp_column: date_timestamp
@@ -1105,3 +1104,12 @@ models:
               group_by: ['idx']
               strictly: true
               sort_column: date_col
+            # expect column values to not be decreasing, [should store failing rows](#1bea8a96eeb4ae8c4c65724604a7271f) 
+          - dbt_expectations.expect_column_values_to_be_increasing:
+              group_by: ['idx']
+              strictly: true
+              tags: [failing_test]
+              sort_column: date_col
+              config:
+                store_failures: true
+                severity: warn
