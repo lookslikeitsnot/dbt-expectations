@@ -811,7 +811,6 @@ models:
           - dbt_expectations.expect_column_stdev_to_be_between:
               min_value: -10
               max_value: -2
-              tags: [failing_test]
               config:
                 store_failures: true
                 severity: warn
@@ -859,9 +858,17 @@ models:
                 severity: warn
           - dbt_expectations.expect_column_distinct_values_to_equal_set:
               value_set: ['a','b','c','c']
+          - dbt_expectations.expect_column_distinct_values_to_equal_set:
+              value_set: ['a','b','c']
             # expect column distinct values to not equal set, [should store failing rows](#c01780bae9e50480f7d344195bc45ba4) 
           - dbt_expectations.expect_column_distinct_values_to_equal_set:
               value_set: ['d','d']
+              config:
+                store_failures: true
+                severity: warn
+            # expect column distinct values to not equal set, [should store failing rows](#6c5efd1d56ef04f10eb3aa61ba72ea62) 
+          - dbt_expectations.expect_column_distinct_values_to_equal_set:
+              value_set: ['a','c']
               config:
                 store_failures: true
                 severity: warn
@@ -880,9 +887,11 @@ models:
             # expect column distinct values to not contain set, [should store failing rows](#217ad937606b61f2d304371afdcd55f9) 
           - dbt_expectations.expect_column_distinct_values_to_contain_set:
               value_set: ['d','e']
+              tags: [failing_test]
               config:
                 store_failures: true
                 severity: warn
+                warn_if: =0
           - dbt_expectations.expect_column_value_lengths_to_equal:
               value: 1
             # expect column value length to not equal, [should store failing rows](#0b59a422d382479dd5ad936a46a8fcb2) 

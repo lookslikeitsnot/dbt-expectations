@@ -421,21 +421,46 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_test')
+        # expect all rows for distinct column values not in set, for all model columns
         # values are stored c01780bae9e50480f7d344195bc45ba4
       - name: dbt_expectations_expect_column_c01780bae9e50480f7d344195bc45ba4
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
               compare_model: ref('data_test')
+              compare_row_condition: "not (col_string_a in ('d', 'd'))"
+              row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_test')
+        # expect all rows for distinct column values not in set with some hits, for all model columns
+        # values are stored 6c5efd1d56ef04f10eb3aa61ba72ea62
+      - name: dbt_expectations_expect_column_6c5efd1d56ef04f10eb3aa61ba72ea62
+        tests:
+          - dbt_expectations.expect_table_row_count_to_equal_other_table:
+              compare_model: ref('data_test')
+              compare_row_condition: "not (col_string_a in ('a','c'))"
+              row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_test')
+        # expect all rows for distinct column values not in set, for all model columns
         # values are stored b0985e035744485abd9b9352d9a9f1c5
       - name: dbt_expectations_expect_column_b0985e035744485abd9b9352d9a9f1c5
         tests:
-          - dbt_expectations.expect_table_row_count_to_equal:
-              value: 3
+          - dbt_expectations.expect_table_row_count_to_equal_other_table:
+              compare_model: ref('data_test')
+              compare_row_condition: "not (col_string_a in ('d', 'e'))"
+              row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_test')
+        # expect all rows for distinct column values not containing set, for all model columns
         # values are stored 217ad937606b61f2d304371afdcd55f9
       - name: dbt_expectations_expect_column_217ad937606b61f2d304371afdcd55f9
         tests:
-          - dbt_expectations.expect_table_row_count_to_equal:
-              value: 2
+          - dbt_expectations.expect_table_row_count_to_equal_other_table:
+              compare_model: ref('data_test')
+              compare_row_condition: "not (col_string_a in ('d', 'e'))"
+              row_condition: "1=1"
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_test')
         # values are stored 0b59a422d382479dd5ad936a46a8fcb2
       - name: dbt_expectations_expect_column_0b59a422d382479dd5ad936a46a8fcb2
         tests:

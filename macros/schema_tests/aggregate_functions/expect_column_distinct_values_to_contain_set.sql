@@ -46,9 +46,18 @@ validation_errors as (
     where
         v.value_field is null
 
+),
+verbose_validation_errors as (
+    select model_.* 
+    from {{ model }} model_
+    where model_.{{column_name}} not in (select * from validation_errors)
+   
 )
-
-select *
-from validation_errors
+select * from 
+{% if should_store_failures() -%}
+    verbose_validation_errors
+{%- else -%}
+    validation_errors
+{%- endif -%}
 
 {% endtest %}
