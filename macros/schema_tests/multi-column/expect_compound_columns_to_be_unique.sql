@@ -44,10 +44,7 @@ with validation_errors as (
     {%- if row_condition_ext %}
         and {{ row_condition_ext }}
     {% endif %}
-    group by
-        {% for column in columns -%}
-        {{ column }}{% if not loop.last %},{% endif %}
-        {%- endfor %}
+    group by {{ columns | join(", ") }}
     having count(*) > 1
 
 )

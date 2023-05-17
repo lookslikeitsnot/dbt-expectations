@@ -117,14 +117,15 @@ sources:
               value: 1
           - dbt_expectations.expect_table_column_count_to_equal:
               value: 2
+        # expect all unordered rows, for all model columns
         # values are stored 67235c57a1e55a762011593efba42b12
       - name: dbt_expectations_expect_column_67235c57a1e55a762011593efba42b12
         tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
               min_value: 10
               max_value: "(select count(*) from {{ref('timeseries_data')}})"
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 3
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('timeseries_data')
         # values are stored 50ff354a7d05e4ab267e187b30a31282
       - name: dbt_expectations_expect_column_50ff354a7d05e4ab267e187b30a31282
         tests:

@@ -54,10 +54,7 @@ with validation_errors as (
         and {{ row_condition }}
 {% endif %}
 {% if group_by_columns %}
-    group by
-    {% for group_by_column in group_by_columns -%}
-{{ group_by_column }}{% if not loop.last %},{% endif %}
-{% endfor %}
+    group by {{ group_by_columns | join(", ") }}
 {% endif %}
 {# if the expression is an eggregation, add it as a filter in the HAVING clause #}
 {% if any_aggregation_matches %}

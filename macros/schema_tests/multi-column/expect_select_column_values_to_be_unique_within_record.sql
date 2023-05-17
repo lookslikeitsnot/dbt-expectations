@@ -52,9 +52,7 @@ with indexed_filtered_model as (
 column_values as (
     select
         row_index,
-        {% for column in columns -%}
-        {{ column }}{% if not loop.last %},{% endif %}
-        {%- endfor %}
+        {{ columns | join(", ") }}
     from indexed_filtered_model
 ),
 unpivot_columns as (
@@ -75,9 +73,7 @@ validation_errors as (
 {%- if should_store_failures() -%}
 {%- set model_column_names = dbt_expectations._get_column_list(model, "upper") -%}
     select
-    {%- for model_column_name in model_column_names %}
-    tv.{{model_column_name}}{% if not loop.last %}, {% endif %}
-    {%- endfor %}
+    tv.{{ model_column_names | join(", tv.") }}
     from  indexed_filtered_model tv
     join non_unique_values nuv
     on
