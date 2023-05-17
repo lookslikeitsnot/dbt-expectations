@@ -393,11 +393,14 @@ sources:
               value: 1
           - dbt_expectations.expect_table_column_count_to_be_between:
               min_value: 1
+        # expect all rows containing the most common value(s) not in value set, for all model columns
         # values are stored 65993ad5cd85d2b007d862fd9c2ac8f5
       - name: dbt_expectations_expect_column_65993ad5cd85d2b007d862fd9c2ac8f5
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
-              value: 1
+              value: 2
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_test')
         # values are stored 14f59b141efceb67d36cefd63fb4bd37
       - name: dbt_expectations_expect_column_14f59b141efceb67d36cefd63fb4bd37
         tests:

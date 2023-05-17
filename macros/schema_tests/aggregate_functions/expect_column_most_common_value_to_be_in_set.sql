@@ -92,9 +92,18 @@ validation_errors as (
     where
         value_field not in (select value_field from unique_set_values)
 
+),
+verbose_validation_errors as (
+    select model_.* 
+    from {{ model }} model_
+    where model_.{{column_name}} in (select * from validation_errors)
+   
 )
-
-select *
-from validation_errors
+select * from 
+{% if should_store_failures() -%}
+    verbose_validation_errors
+{%- else -%}
+    validation_errors
+{%- endif -%}
 
 {% endmacro %}
