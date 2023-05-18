@@ -111,7 +111,8 @@ final as (
     from
         base_dates d
         left join
-        model_data f on cast(d.date_{{ date_part }} as {{ dbt_expectations.type_datetime() }}) = f.date_{{ date_part }}
+        --model_data f on cast(d.date_{{ date_part }} as {{ dbt_expectations.type_datetime() }}) = f.date_{{ date_part }}
+        model_data f on cast({{ dbt.date_trunc(date_part, 'd.date_' + date_part) }} as {{ dbt_expectations.type_datetime() }}) = f.date_{{ date_part }}
 )
 select
     *
