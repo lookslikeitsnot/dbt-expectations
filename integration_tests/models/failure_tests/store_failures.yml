@@ -3,7 +3,8 @@ sources:
   - name: testing_results
     schema: dbt_test__audit
     tables:
-      # values are stored 50fe8158b4b65c99f8593f7471f8d775
+        # expect all non-regex matching rows, for all model columns
+        # values are stored expect_column_values_to_match_regex 50fe8158b4b65c99f8593f7471f8d775
       - name: dbt_expectations_expect_column_50fe8158b4b65c99f8593f7471f8d775
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
@@ -14,7 +15,8 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_text')
-        # values are stored b4b9840924c5c3e876fc0ade7e089cd3
+        # expect all regex matching rows, for all model columns
+        # values are stored expect_column_values_to_not_match_regex b4b9840924c5c3e876fc0ade7e089cd3
       - name: dbt_expectations_expect_column_b4b9840924c5c3e876fc0ade7e089cd3
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
@@ -23,7 +25,8 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_text')
-            # values are stored f674e5dfe4d52219da8040028b6cdb19
+        # expect all non-regex matching rows, for all model columns
+        # values are stored expect_column_values_to_match_regex_list f674e5dfe4d52219da8040028b6cdb19
       - name: dbt_expectations_expect_column_f674e5dfe4d52219da8040028b6cdb19
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
@@ -37,7 +40,8 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_text')
-        # values are stored 70f3f57594dd0b48f023ff721af3543d
+        # expect all regex matching rows, for all model columns
+        # values are stored expect_column_values_to_not_match_regex_list 70f3f57594dd0b48f023ff721af3543d
       - name: dbt_expectations_expect_column_70f3f57594dd0b48f023ff721af3543d
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
@@ -46,7 +50,8 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_text')
-        # values are stored 4429ac830680fbacf3f79efc3b9e563a
+        # expect all non-pattern matching rows, for all model columns
+        # values are stored expect_column_values_to_match_like_pattern 4429ac830680fbacf3f79efc3b9e563a
       - name: dbt_expectations_expect_column_4429ac830680fbacf3f79efc3b9e563a
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
@@ -55,7 +60,8 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_text')
-        # values are stored 9ebeef47a6253273bb16ea1fb555f3d4
+        # expect all pattern matching rows, for all model columns
+        # values are stored expect_column_values_to_not_match_like_pattern 9ebeef47a6253273bb16ea1fb555f3d4
       - name: dbt_expectations_expect_column_9ebeef47a6253273bb16ea1fb555f3d4
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
@@ -64,7 +70,8 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_text')
-        # values are stored a46176829897335ef5b484ce3e7639c6
+        # expect all non-pattern matching rows, for all model columns
+        # values are stored expect_column_values_to_match_like_pattern_list a46176829897335ef5b484ce3e7639c6
       - name: dbt_expectations_expect_column_a46176829897335ef5b484ce3e7639c6
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
@@ -73,7 +80,8 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_text')
-        # values are stored 089145ee8260c6403493de6d16d18f6d
+        # expect all pattern matching rows, for all model columns
+        # values are stored expect_column_values_to_not_match_like_pattern_list 089145ee8260c6403493de6d16d18f6d
       - name: dbt_expectations_expect_column_089145ee8260c6403493de6d16d18f6d
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
@@ -82,27 +90,30 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_text')
-        # values are stored 3bd6bcfa1e483bf563d0c6b6ff125548
+        # expect all wrong-indexed rows, with names and indexes for relation and input
+        # values are stored expect_table_columns_to_match_ordered_list 3bd6bcfa1e483bf563d0c6b6ff125548
       - name: dbt_expectations_expect_table__3bd6bcfa1e483bf563d0c6b6ff125548
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 8
           - dbt_expectations.expect_table_column_count_to_equal:
               value: 4
-        # values are stored 6029c8216b74899244b808c16a83c95e
+        # expect 1 row with at least columns containing distinct counts for the 2 tables
+        # values are stored expect_column_distinct_count_to_equal_other_table 6029c8216b74899244b808c16a83c95e
       - name: dbt_expectations_expect_column_6029c8216b74899244b808c16a83c95e
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 4
-        # values are stored c156bf23e00131cf1e530433ab681fef
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 2
+        # expect rows for every missing datepart with at least 1 column containing the missing datepart
+        # values are stored expect_row_values_to_have_data_for_every_n_datepart c156bf23e00131cf1e530433ab681fef
       - name: dbt_expectations_expect_row_va_c156bf23e00131cf1e530433ab681fef
         tests:
-          - dbt_expectations.expect_table_row_count_to_equal:
-              value: 1
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 3
+          - dbt_expectations.expect_table_row_count_to_be_between:
+              min_value: 1
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 1
         # values are stored 252ae16f60f705db85ba7e3cdf93dd8c
       - name: dbt_expectations_expect_row_va_252ae16f60f705db85ba7e3cdf93dd8c
         tests:

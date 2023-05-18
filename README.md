@@ -1226,7 +1226,7 @@ tests:
 - `test_end_date` is exclusive, e.g. a test with `test_end_date` value of `'2020-01-05'` will pass if your model has data through `'2021-01-04'`.
 
 - If `test_start_date` or `test_end_date` are not specified, the test automatically determines the `min`/`max` of the specified `date_col` from your data, respectively.
-On some platforms, and/or if your table is not partitione on that date column, this may lead to performance issues. In these cases, we recommend setting an explicit date literal. You may also set a "dynamic" date literal via the built-in `modules.datetime` functions:
+On some platforms, and/or if your table is not partitioned on that date column, this may lead to performance issues. In these cases, we recommend setting an explicit date literal. You may also set a "dynamic" date literal via the built-in `modules.datetime` functions:
 
 ```yaml
     date_part: day
