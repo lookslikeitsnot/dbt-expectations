@@ -59,14 +59,16 @@ where
 verbose_validation_errors as (
     select model_.* 
     from {{ model }} model_
-    join validation_errors ve
-    on 1 = 1
     {% if group_by %}
+    join validation_errors ve on
     {% for group_by_column in group_by -%}
-        and ve.{{ group_by_column }} = model_.{{ group_by_column }} 
+        ve.{{ group_by_column }} = model_.{{ group_by_column }} {% if not loop.last %} and {% endif %}
     {% endfor -%}
-    {%- endif -%}
     where ve is not null   
+    {%- else -%}
+    , (select count(*) as cnt from validation_errors) ve_cnt
+    where ve_cnt.cnt > 0 
+    {%- endif -%}
 )
 select * from 
 {% if should_store_failures() -%}

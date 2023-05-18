@@ -131,7 +131,9 @@ metric_sigma as (
     from
         metric_moving_calcs
 
-)
+),
+validation_errors as (
+
 select
     *
 from
@@ -149,4 +151,25 @@ where
         metric_test_sigma >= {{ sigma_threshold_lower }} and
         metric_test_sigma <= {{ sigma_threshold_upper }}
     )
+),
+verbose_validation_errors as (
+    select model_.* 
+    from {{ model }} model_
+    {% if group_by %}
+    join validation_errors ve on
+    {% for group_by_column in group_by -%}
+       ve.{{ group_by_column }} = model_.{{ group_by_column }} {% if not loop.last %} and {% endif %}
+    {% endfor -%}
+    where ve is not null   
+    {%- else -%}
+    , (select count(*) as cnt from validation_errors) ve_cnt
+    where ve_cnt.cnt > 0 
+    {%- endif -%}
+)
+select * from  
+{% if should_store_failures() -%}
+    verbose_validation_errors
+{%- else -%}
+    validation_errors
+{%- endif -%}
 {%- endmacro -%}

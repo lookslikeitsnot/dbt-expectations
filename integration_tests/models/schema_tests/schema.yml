@@ -388,6 +388,7 @@ models:
               date_column_name: date_day
               sigma_threshold: 1
               take_logs: true
+              tags: [failing_test]
               config:
                 store_failures: true
                 severity: warn

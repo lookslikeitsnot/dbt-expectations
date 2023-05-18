@@ -156,14 +156,15 @@ sources:
               compare_model: ref('timeseries_data')
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('timeseries_data')
-        # values are stored 358fc6ef8e5314e8f961d04fb0e0d443
+        # expect all rows in window where moving stddev > sigma_threshold, for all model columns
+        # values are stored expect_column_values_to_be_within_n_moving_stdevs 358fc6ef8e5314e8f961d04fb0e0d443
       - name: dbt_expectations_expect_column_358fc6ef8e5314e8f961d04fb0e0d443
         tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
-              min_value: 3
+              min_value: 10
               max_value: "(select count(*) from {{ref('timeseries_data')}})"
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 8
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('timeseries_data')
         # values are stored a2801f8e4aa53181f19a858008276d76
       - name: dbt_expectations_expect_table__a2801f8e4aa53181f19a858008276d76
         tests:
