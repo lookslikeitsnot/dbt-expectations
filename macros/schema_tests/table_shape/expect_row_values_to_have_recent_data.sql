@@ -25,26 +25,31 @@ with max_recency as (
         {% if row_condition %}
         and {{ row_condition }}
         {% endif %}
-)
-{% if should_store_failures() %}
-select
-    model_.*
-from
-    {{ model }} model_
-join max_recency mr on mr.max_timestamp = cast(model_.{{ column_name }} as {{ dbt_expectations.type_timestamp() }})
-where
-    mr is not null and
-{% else %}
-select
-    *
-from
-    max_recency
-where
-{% endif %}
+),
+validation_errors as (
+    select
+        *
+    from
+        max_recency
+    where
     -- if the row_condition excludes all rows, we need to compare against a default date
     -- to avoid false negatives
-    coalesce(max_timestamp, cast('{{ default_start_date }}' as {{ dbt_expectations.type_timestamp() }}))
-        <
-        cast({{ dbt.dateadd(datepart, interval * -1, dbt_date.now()) }} as {{ dbt_expectations.type_timestamp() }})
+        coalesce(max_timestamp, cast('{{ default_start_date }}' as {{ dbt_expectations.type_timestamp() }}))
+            <
+            cast({{ dbt.dateadd(datepart, interval * -1, dbt_date.now()) }} as {{ dbt_expectations.type_timestamp() }})
+),
+verbose_validation_errors as (
+    select model_.* 
+    from {{ model }} model_
+    join validation_errors ve
+    on ve.max_timestamp = cast(model_.{{ column_name }} as {{ dbt_expectations.type_timestamp() }})
+    where ve is not null   
+)
+select * from 
+{% if should_store_failures() -%}
+    verbose_validation_errors
+{%- else -%}
+    validation_errors
+{%- endif -%}
 
 {% endmacro %}

@@ -47,11 +47,31 @@ metric_values_z_scores as (
     from
         metric_values_with_statistics
 
-)
+),
+validation_errors as (
 select
     *
 from
     metric_values_z_scores
 where
     abs({{ column_name }}_sigma) > {{ sigma_threshold }}
+),
+verbose_validation_errors as (
+    select model_.* 
+    from {{ model }} model_
+    join validation_errors ve
+    on 1 = 1
+    {% if group_by %}
+    {% for group_by_column in group_by -%}
+        and ve.{{ group_by_column }} = model_.{{ group_by_column }} 
+    {% endfor -%}
+    {%- endif -%}
+    where ve is not null   
+)
+select * from 
+{% if should_store_failures() -%}
+    verbose_validation_errors
+{%- else -%}
+    validation_errors
+{%- endif -%}
 {%- endmacro %}

@@ -114,22 +114,24 @@ sources:
               min_value: 1
           - dbt_expectations.expect_table_column_count_to_be_between:
               min_value: 1
-        # values are stored 252ae16f60f705db85ba7e3cdf93dd8c
+        # expect most recent row(s), with all model columns
+        # values are stored expect_row_values_to_have_recent_data 252ae16f60f705db85ba7e3cdf93dd8c
       - name: dbt_expectations_expect_row_va_252ae16f60f705db85ba7e3cdf93dd8c
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('timeseries_data')
-        # values are stored aa2f35c87625a42aa8f95fde5849e2f6
+        # expect 1 row containing at least the column type
+        # values are stored expect_column_values_to_be_in_type_list aa2f35c87625a42aa8f95fde5849e2f6
       - name: dbt_expectations_expect_column_aa2f35c87625a42aa8f95fde5849e2f6
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 2
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 1
         # expect all unordered rows, for all model columns
-        # values are stored 67235c57a1e55a762011593efba42b12
+        # values are stored expect_column_values_to_be_increasing 67235c57a1e55a762011593efba42b12
       - name: dbt_expectations_expect_column_67235c57a1e55a762011593efba42b12
         tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
@@ -137,14 +139,23 @@ sources:
               max_value: "(select count(*) from {{ref('timeseries_data')}})"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('timeseries_data')
-        # values are stored 50ff354a7d05e4ab267e187b30a31282
+        # expect all rows in window where stddev > sigma_threshold, for all model columns
+        # values are stored expect_column_values_to_be_within_n_stdevs 50ff354a7d05e4ab267e187b30a31282
       - name: dbt_expectations_expect_column_50ff354a7d05e4ab267e187b30a31282
         tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
               min_value: 10
               max_value: "(select count(*) from {{ref('timeseries_data')}})"
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 5
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('timeseries_data')
+        # expect all rows, for all model columns
+        # values are stored expect_column_values_to_be_within_n_stdevs bba8faaa81a4109abd9287b2c176e093
+      - name: dbt_expectations_expect_column_bba8faaa81a4109abd9287b2c176e093
+        tests:
+          - dbt_expectations.expect_table_row_count_to_equal_other_table:
+              compare_model: ref('timeseries_data')
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('timeseries_data')
         # values are stored 358fc6ef8e5314e8f961d04fb0e0d443
       - name: dbt_expectations_expect_column_358fc6ef8e5314e8f961d04fb0e0d443
         tests:

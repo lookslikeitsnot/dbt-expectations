@@ -362,10 +362,18 @@ models:
           - dbt_expectations.expect_column_values_to_be_within_n_stdevs:
               group_by: ["date_day"]
               sigma_threshold: 6
-            # expect column values to be outside the stdev, [should store failing rows](#50ff354a7d05e4ab267e187b30a31282) 
+            # expect column values to be outside the threshold, [should store failing rows](#50ff354a7d05e4ab267e187b30a31282) 
           - dbt_expectations.expect_column_values_to_be_within_n_stdevs:
               group_by: ["date_day"]
               sigma_threshold: 1
+              config:
+                store_failures: true
+                severity: warn
+                warn_if: =0
+            # expect all column values to be outside the threshold, [should store failing rows](#bba8faaa81a4109abd9287b2c176e093) 
+          - dbt_expectations.expect_column_values_to_be_within_n_stdevs:
+              group_by: ["date_day"]
+              sigma_threshold: -1000
               config:
                 store_failures: true
                 severity: warn
