@@ -60,6 +60,8 @@ with validation_errors as (
 
 )
 
-select * from validation_errors
+select * 
+from validation_errors
+
 {% endmacro -%}
 

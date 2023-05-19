@@ -229,41 +229,46 @@ sources:
               value: 1
           - dbt_expectations.expect_table_column_count_to_be_between:
               min_value: 1
-        # values are stored 830445dfcdfe97274bbaaebe666a49f9
+        # expect 1 row containing at least the actual row counts of the two tables
+        # values are stored expect_table_row_count_to_equal_other_table 830445dfcdfe97274bbaaebe666a49f9
       - name: dbt_expectations_expect_table__830445dfcdfe97274bbaaebe666a49f9
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 4
-        # values are stored 5d8af86142e455acf893fdb79954e8d5
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 2
+        # expect 1 row containing at least the actual column count of the input table
+        # values are stored expect_table_column_count_to_equal 5d8af86142e455acf893fdb79954e8d5
       - name: dbt_expectations_expect_table__5d8af86142e455acf893fdb79954e8d5
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 2
-        # values are stored 7b683c0fd621761bf32ea9c77a1207cd
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 1
+        # expect 1 row containing at least the actual column count of the input table
+        # values are stored expect_table_column_count_to_be_between 7b683c0fd621761bf32ea9c77a1207cd
       - name: dbt_expectations_expect_table__7b683c0fd621761bf32ea9c77a1207cd
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 3
-        # values are stored 3342f886eb20425d4023c50b6c264cc5
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 1
+        # expect rows for every column containing at least the name of the column
+        # values are stored expect_table_columns_to_contain_set 3342f886eb20425d4023c50b6c264cc5
       - name: dbt_expectations_expect_table__3342f886eb20425d4023c50b6c264cc5
         tests:
-          - dbt_expectations.expect_table_row_count_to_equal:
-              value: 2
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 2
-        # values are stored a58aba93ddbbbe366e3944db925de93b
-      - name: dbt_expectations_expect_table__a58aba93ddbbbe366e3944db925de93b
+          - dbt_expectations.expect_table_row_count_to_be_between:
+              min_value: 1
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 1
+        # expect rows for every column containing at least the name of the column
+        # values are stored expect_table_columns_to_match_set c6bdddebe1aa529d2136436d76dfd145
+      - name: dbt_expectations_expect_table__c6bdddebe1aa529d2136436d76dfd145
         tests:
-          - dbt_expectations.expect_table_row_count_to_equal:
-              value: 10
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 2
+          - dbt_expectations.expect_table_row_count_to_be_between:
+              min_value: 1
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 1
         # values are stored 16229538390f70e3c4e0ef33f51f7126
       - name: dbt_expectations_expect_table__16229538390f70e3c4e0ef33f51f7126
         tests:

@@ -565,7 +565,6 @@ models:
           max_value: 4
         # expect row count to not be between, [should store failing rows](#6a676b6265533cbfb045f2e0c76d7fb4) 
       - dbt_expectations.expect_table_row_count_to_be_between:
-          tags: [failing_test]
           min_value: -8
           max_value: -4
           config:
@@ -624,9 +623,10 @@ models:
                 warn_if: =0
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list: ["idx", "date_col", "col_numeric_a", "col_numeric_b", "col_string_a", "col_string_b", "col_null", "col_null_2"]
-        # expect table columns to not match set, [should store failing rows](#a58aba93ddbbbe366e3944db925de93b) 
+        # expect table columns to not match set, [should store failing rows](#c6bdddebe1aa529d2136436d76dfd145) 
       - dbt_expectations.expect_table_columns_to_match_set:
-          column_list: ["col_not_in_table_a", "col_not_in_table_b"]
+          column_list: ["col_not_in_table_a", "col_not_in_table_b", "date_col"]
+          tags: [failing_test]
           config:
                 store_failures: true
                 severity: warn
