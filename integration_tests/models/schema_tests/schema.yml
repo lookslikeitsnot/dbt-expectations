@@ -448,6 +448,14 @@ models:
           - dbt_expectations.expect_column_distinct_count_to_equal:
               row_condition: date_day = {{ dbt_date.yesterday() }}
               value: 10
+            # expect column distinct count to not be equal to, [should store failing rows](#96846a820a22f54463c2b71ef9cb339a) 
+          - dbt_expectations.expect_column_distinct_count_to_equal:
+              row_condition: date_day = {{ dbt_date.yesterday() }}
+              value: 11
+              config:
+                store_failures: true
+                severity: warn
+                warn_if: =0
           - dbt_expectations.expect_column_distinct_count_to_be_greater_than:
               row_condition: date_day = {{ dbt_date.yesterday() }}
               value: 1
@@ -557,6 +565,7 @@ models:
           max_value: 4
         # expect row count to not be between, [should store failing rows](#6a676b6265533cbfb045f2e0c76d7fb4) 
       - dbt_expectations.expect_table_row_count_to_be_between:
+          tags: [failing_test]
           min_value: -8
           max_value: -4
           config:

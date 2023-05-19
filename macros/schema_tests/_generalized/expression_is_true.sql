@@ -9,6 +9,8 @@
 
 {% endtest %}
 
+
+
 {% macro expression_is_true(model,
                                  expression,
                                  test_condition="= true",
@@ -19,11 +21,7 @@
 {%- endmacro %}
 
 {% macro default__expression_is_true(model, expression, test_condition, group_by_columns, row_condition) -%}
-{# Check if the query is an aggregation by finding matching operator followed by balanced parentheses #}
-{%- set aggregations_pattern = '(avg|count|max|min|stddev|sum)\((?:[^)(]|\((?:[^)(]|\((?:[^)(]|\([^)(]*\))*\))*\))*\)' -%}
-{%- set re = modules.re -%}
-{%- set inline_expression = re.sub('\s{2,}|\n', " ", expression) -%}
-{%- set any_aggregation_matches = re.search(aggregations_pattern, inline_expression, re.IGNORECASE) -%}
+{% set all_aggregation_expressions = dbt_expectations._get_distinct_aggregation_list(expression) %}
 with validation_errors as (
     select
         {% if group_by_columns %}
@@ -31,11 +29,10 @@ with validation_errors as (
                 {{ group_by_column }} as col_{{ loop.index }}{% if not loop.last %},{% endif %}
             {% endfor -%}
         {# if expression contains aggregations and storing failures, emit all grouped columns from model #}
-        {% elif any_aggregation_matches and should_store_failures() %}
-            {%- set all_aggregation_matches = re.finditer(aggregations_pattern, inline_expression, re.IGNORECASE) -%}
-            {% for aggregation_matches in all_aggregation_matches -%}
-                {%- set aggregation_column_name = (aggregation_matches.group(0) | replace('(', '_')| replace(')', '_')| replace('.', '_')| replace(' ', '_')| replace('*', 'star')) -%}
-                {{ aggregation_matches.group(0) }}  as col_{{ loop.index }}_{{ aggregation_column_name }}{% if not loop.last %},{% endif %}
+        {% elif all_aggregation_expressions and should_store_failures() %}
+            {% for aggregation_expression in all_aggregation_expressions -%}
+                {%- set aggregation_column_name = dbt_expectations._replace_special_characters(aggregation_expression) -%}
+                {{ aggregation_expression}}  as col_{{ aggregation_column_name }}{{ loop.index }}{% if not loop.last %},{% endif %}
             {% endfor -%}
         {# if storing failures, emit all columns from the model for non-grouped tests #}
         {% elif should_store_failures() %}
@@ -47,7 +44,7 @@ with validation_errors as (
     from {{ model }} model_
     where 1=1
 {# if the expression is not an eggregation, add it as a filter in the WHERE clause #}
-{% if not any_aggregation_matches %}
+{% if not all_aggregation_expressions %}
         and not(({{expression}}) {{ test_condition }})
 {% endif %}
 {%- if row_condition %}
@@ -57,7 +54,7 @@ with validation_errors as (
     group by {{ group_by_columns | join(", ") }}
 {% endif %}
 {# if the expression is an eggregation, add it as a filter in the HAVING clause #}
-{% if any_aggregation_matches %}
+{% if all_aggregation_expressions %}
    having not(({{expression}}) {{ test_condition }})
 {% endif %}
 
