@@ -388,7 +388,6 @@ models:
               date_column_name: date_day
               sigma_threshold: 1
               take_logs: true
-              tags: [failing_test]
               config:
                 store_failures: true
                 severity: warn
@@ -417,7 +416,7 @@ models:
           compare_model: ref("timeseries_data")
         # expect table aggregation to differ, [should store failing rows](#a2801f8e4aa53181f19a858008276d76) 
       - dbt_expectations.expect_table_aggregation_to_equal_other_table:
-          expression: count(distinct row_value)
+          expression: count(distinct round(row_value))
           compare_expression: count(*)
           compare_model: ref("timeseries_data")
           config:

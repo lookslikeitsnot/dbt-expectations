@@ -165,11 +165,12 @@ sources:
               max_value: "(select count(*) from {{ref('timeseries_data')}})"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('timeseries_data')
-        # values are stored a2801f8e4aa53181f19a858008276d76
+        # expect at least 1 row containing the expression results (could happen if using window functions) and the compared expression result
+        # values are stored expect_table_aggregation_to_equal_other_table a2801f8e4aa53181f19a858008276d76
       - name: dbt_expectations_expect_table__a2801f8e4aa53181f19a858008276d76
         tests:
-          - dbt_expectations.expect_table_row_count_to_equal:
-              value: 1
+          - dbt_expectations.expect_table_row_count_to_be_between:
+              min_value: 1
           - dbt_expectations.expect_table_column_count_to_equal:
               value: 4
         # values are stored 6a0ca8675c186627894f397e6af82160
