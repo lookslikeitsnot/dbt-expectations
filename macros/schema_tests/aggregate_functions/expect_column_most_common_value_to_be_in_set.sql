@@ -3,10 +3,10 @@
                                                        value_set,
                                                        top_n,
                                                        quote_values=True,
-                                                       data_type="decimal",
+                                                       data_type=None,
                                                        row_condition=None
                                                        ) -%}
-
+{% set data_type = dbt.type_numeric() if not data_type else data_type %}
     {{ adapter.dispatch('test_expect_column_most_common_value_to_be_in_set', 'dbt_expectations') (
             model, column_name, value_set, top_n, quote_values, data_type, row_condition
         ) }}

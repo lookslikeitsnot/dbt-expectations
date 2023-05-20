@@ -586,7 +586,8 @@ sources:
         tests:
           - dbt_expectations.expect_table_row_count_to_equal_other_table:
               compare_model: ref('timeseries_data_grouped')
-              compare_row_condition: not (date_timestamp > now())
+              compare_row_condition: > 
+                not (date_timestamp > {{dbt_date.now()}})
               row_condition: "1=1"
               compare_group_by: [group_id]
               group_by: [group_id]
