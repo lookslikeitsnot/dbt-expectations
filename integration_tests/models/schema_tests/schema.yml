@@ -635,7 +635,6 @@ models:
         # expect table columns to not match ordered list because of the missing column, [should store failing rows](#2cb530c665a8cf00ce1964d02e863282) 
       - dbt_expectations.expect_table_columns_to_match_ordered_list:
           column_list: ["idx", "date_col", "col_numeric_a", "col_numeric_b", "col_string_a", "col_string_b", "col_null"]
-          tags: [failing_test]
           config:
                 store_failures: true
                 severity: warn

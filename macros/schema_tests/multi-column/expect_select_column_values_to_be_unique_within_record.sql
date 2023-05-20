@@ -70,8 +70,14 @@ non_unique_values as (
     having count(distinct column_value) < {{ columns | length }}
 ),
 validation_errors as (
-{%- if should_store_failures() -%}
-{%- set model_column_names = dbt_expectations._get_column_list(model, "upper") -%}
+    
+    select
+        *
+    from non_unique_values
+
+),
+verbose_validation_errors as (
+    {%- set model_column_names = dbt_expectations._get_column_list(model, "upper") -%}
     select
     tv.{{ model_column_names | join(", tv.") }}
     from  indexed_filtered_model tv
@@ -79,11 +85,12 @@ validation_errors as (
     on
         tv.row_index = nuv.row_index
     where nuv is not null
-{%- else -%}
-    select
-        *
-    from non_unique_values
-{%- endif -%}
 )
-select * from validation_errors
+select * 
+from 
+{% if should_store_failures() -%}
+    verbose_validation_errors
+{%- else -%}
+    validation_errors
+{%- endif -%}
 {% endmacro %}

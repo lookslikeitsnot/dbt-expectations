@@ -198,7 +198,8 @@ Expect the specified column to exist.
 
 ```yaml
 tests:
-  - dbt_expectations.expect_column_to_exist
+  - dbt_expectations.expect_column_to_exist:
+      column_index: 5 # (Optional)
 ```
 
 ### [expect_row_values_to_have_recent_data](macros/schema_tests/table_shape/expect_row_values_to_have_recent_data.sql)
@@ -1072,7 +1073,7 @@ tests:
   - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
       column_A: col_numeric_a
       column_B: col_numeric_a
-      or_equal: True
+      or_equal: True # (Optional. Default is 'false')
       row_condition: "id is not null" # (Optional)
 ```
 
