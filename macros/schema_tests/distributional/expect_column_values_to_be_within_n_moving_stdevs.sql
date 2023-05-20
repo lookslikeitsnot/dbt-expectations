@@ -160,7 +160,7 @@ verbose_validation_errors as (
     {% for group_by_column in group_by -%}
        ve.{{ group_by_column }} = model_.{{ group_by_column }} {% if not loop.last %} and {% endif %}
     {% endfor -%}
-    where ve is not null   
+    where ve.metric_test_delta is not null   
     {%- else -%}
     , (select count(*) as cnt from validation_errors) ve_cnt
     where ve_cnt.cnt > 0 

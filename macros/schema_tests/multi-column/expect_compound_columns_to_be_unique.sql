@@ -47,24 +47,28 @@ with validation_errors as (
     group by {{ columns | join(", ") }}
     having count(*) > 1
 
-)
+),
 {# if storing failures, emit all columns from the model #}
-{% if should_store_failures() %}
-select model_.* 
-from {{ model }} model_
-join validation_errors ve
-on 
-{% for column in columns -%}
-model_.{{ column }} = ve.col_{{ loop.index }} {% if not loop.last %} and {% endif %}
-{%- endfor %} 
-where
-    ve is not null
-    {%- if row_condition_ext %}
-        and {{ row_condition_ext }}
-    {% endif %}
-{% else %}
-select * from validation_errors
-{% endif %}
+verbose_validation_errors as (
+    select model_.* 
+    from {{ model }} model_
+    join validation_errors ve
+    on 
+    {% for column in columns -%}
+    model_.{{ column }} = ve.col_{{ loop.index }} {% if not loop.last %} and {% endif %}
+    {%- endfor %} 
+    where
+    {% for column in columns -%}
+    ve.col_{{ loop.index }} is not null {% if not loop.last %} and {% endif %}
+    {%- endfor %} 
+)
+select * from 
+{% if should_store_failures() -%}
+    verbose_validation_errors
+{%- else -%}
+    validation_errors
+{%- endif -%}
+
 {% endtest %}
 
 

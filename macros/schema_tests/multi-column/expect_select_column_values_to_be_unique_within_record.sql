@@ -84,7 +84,7 @@ verbose_validation_errors as (
     join non_unique_values nuv
     on
         tv.row_index = nuv.row_index
-    where nuv is not null
+    where nuv.row_index is not null
 )
 select * 
 from 
