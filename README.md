@@ -1259,5 +1259,6 @@ To run the tests:
 
 1. You will need a profile called `integration_tests` in `~/.dbt/profiles.yml` pointing to a writable database. We only support postgres, BigQuery and Snowflake.
 2. Then, from within the `integration_tests` folder, run `dbt build` to run the test models in `integration_tests/models/schema_tests/` and run the tests specified in `integration_tests/models/schema_tests/schema.yml`
+3. Then run `dbt build --select failure_tests` to check the failed tests from step 2 were correctly stored and contain expected data
 
 <img src="https://raw.githubusercontent.com/calogica/dbt-expectations/main/expectations.gif"/>
