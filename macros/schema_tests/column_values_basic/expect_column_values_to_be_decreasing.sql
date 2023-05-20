@@ -72,4 +72,5 @@ select * from
 {%- else -%}
     validation_errors
 {%- endif -%}
+
 {% endtest %}

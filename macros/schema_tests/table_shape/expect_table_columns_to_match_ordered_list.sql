@@ -39,7 +39,7 @@ validation_errors as (
 verbose_validation_errors as (
 
     select
-        coalesce(relation_column_idx, input_column_idx),
+        coalesce(relation_column_idx, input_column_idx) as column_idx,
         relation_column,
         input_column,
         case 

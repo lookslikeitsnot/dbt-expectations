@@ -172,4 +172,5 @@ select * from
 {%- else -%}
     validation_errors
 {%- endif -%}
+
 {%- endmacro -%}
