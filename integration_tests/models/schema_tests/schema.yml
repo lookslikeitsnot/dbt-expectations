@@ -414,7 +414,7 @@ models:
           expression: count(distinct date_day)
           compare_expression: count(*)
           compare_model: ref("timeseries_data")
-        # expect table aggregation to differ, [should store failing rows](#a2801f8e4aa53181f19a858008276d76) 
+        # expect table aggregation to differ, [should store failing rows](#b5065108d1d40dc0d13303cca58d360a) 
       - dbt_expectations.expect_table_aggregation_to_equal_other_table:
           expression: count(distinct round(row_value))
           compare_expression: count(*)
@@ -626,16 +626,23 @@ models:
         # expect table columns to not match set, [should store failing rows](#c6bdddebe1aa529d2136436d76dfd145) 
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list: ["col_not_in_table_a", "col_not_in_table_b", "date_col"]
-          tags: [failing_test]
           config:
                 store_failures: true
                 severity: warn
                 warn_if: =0
       - dbt_expectations.expect_table_columns_to_match_ordered_list:
           column_list: ["idx", "date_col", "col_numeric_a", "col_numeric_b", "col_string_a", "col_string_b", "col_null", "col_null_2"]
-        # expect table columns to not match ordered list, [should store failing rows](#16229538390f70e3c4e0ef33f51f7126) 
+        # expect table columns to not match ordered list because of the missing column, [should store failing rows](#2cb530c665a8cf00ce1964d02e863282) 
       - dbt_expectations.expect_table_columns_to_match_ordered_list:
-          column_list: ["date_col", "col_numeric_a", "col_numeric_b", "col_string_a", "col_string_b", "col_null", "col_null_2", "idx"]
+          column_list: ["idx", "date_col", "col_numeric_a", "col_numeric_b", "col_string_a", "col_string_b", "col_null"]
+          tags: [failing_test]
+          config:
+                store_failures: true
+                severity: warn
+                warn_if: =0
+        # expect table columns to not match ordered list because of the extra column, [should store failing rows](#ac1da4a7b49aeea7350913219dcb0bf5) 
+      - dbt_expectations.expect_table_columns_to_match_ordered_list:
+          column_list: ["idx", "date_col", "col_numeric_a", "col_numeric_b", "col_string_a", "col_string_b", "col_null", "col_null_2", "extra_column"]
           config:
                 store_failures: true
                 severity: warn

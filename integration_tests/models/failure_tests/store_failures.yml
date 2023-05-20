@@ -90,14 +90,16 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_text')
-        # expect all wrong-indexed rows, with names and indexes for relation and input
+        # expect rows for every column containing at least the name of the relation column, the name of the input column, 
+        # and whether or not they're matching
         # values are stored expect_table_columns_to_match_ordered_list 3bd6bcfa1e483bf563d0c6b6ff125548
       - name: dbt_expectations_expect_table__3bd6bcfa1e483bf563d0c6b6ff125548
         tests:
-          - dbt_expectations.expect_table_row_count_to_equal:
-              value: 8
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 4
+          - dbt_expectations.expect_table_row_count_to_be_between:
+              min_value: >
+                {{dbt_expectations._get_column_list(ref('timeseries_data'))|length}}
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 4
         # expect 1 row with at least columns containing distinct counts for the 2 tables
         # values are stored expect_column_distinct_count_to_equal_other_table 6029c8216b74899244b808c16a83c95e
       - name: dbt_expectations_expect_column_6029c8216b74899244b808c16a83c95e
@@ -166,8 +168,8 @@ sources:
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('timeseries_data')
         # expect at least 1 row containing the expression results (could happen if using window functions) and the compared expression result
-        # values are stored expect_table_aggregation_to_equal_other_table a2801f8e4aa53181f19a858008276d76
-      - name: dbt_expectations_expect_table__a2801f8e4aa53181f19a858008276d76
+        # values are stored expect_table_aggregation_to_equal_other_table b5065108d1d40dc0d13303cca58d360a
+      - name: dbt_expectations_expect_table__b5065108d1d40dc0d13303cca58d360a
         tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
               min_value: 1
@@ -253,36 +255,52 @@ sources:
               value: 1
           - dbt_expectations.expect_table_column_count_to_be_between:
               min_value: 1
-        # expect rows for every column containing at least the name of the column
+        # expect rows for every column containing at least the name of the relation column, the name of the input column, 
+        # and whether or not they're matching
         # values are stored expect_table_columns_to_contain_set 3342f886eb20425d4023c50b6c264cc5
       - name: dbt_expectations_expect_table__3342f886eb20425d4023c50b6c264cc5
         tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
               min_value: 1
           - dbt_expectations.expect_table_column_count_to_be_between:
-              min_value: 1
-        # expect rows for every column containing at least the name of the column
+              min_value: 3
+        # expect rows for every column containing at least the name of the relation column, the name of the input column, 
+        # and whether or not they're matching
         # values are stored expect_table_columns_to_match_set c6bdddebe1aa529d2136436d76dfd145
       - name: dbt_expectations_expect_table__c6bdddebe1aa529d2136436d76dfd145
         tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
               min_value: 1
           - dbt_expectations.expect_table_column_count_to_be_between:
-              min_value: 1
-        # values are stored 16229538390f70e3c4e0ef33f51f7126
-      - name: dbt_expectations_expect_table__16229538390f70e3c4e0ef33f51f7126
+              min_value: 3
+        # expect rows for every column containing at least the name of the relation column, the name of the input column, 
+        # and whether or not they're matching
+        # values are stored expect_table_columns_to_match_ordered_list 2cb530c665a8cf00ce1964d02e863282
+      - name: dbt_expectations_expect_table__2cb530c665a8cf00ce1964d02e863282
         tests:
-          - dbt_expectations.expect_table_row_count_to_equal:
-              value: 16
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 4
-        # values are stored c0a3de97b1f744c65e3d2e715bed42d7
+          - dbt_expectations.expect_table_row_count_to_be_between:
+              min_value: >
+                {{dbt_expectations._get_column_list(ref('data_test'))|length}}
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 4
+        # expect rows for every column containing at least the name of the relation column, the name of the input column, 
+        # and whether or not they're matching
+        # values are stored expect_table_columns_to_match_ordered_list ac1da4a7b49aeea7350913219dcb0bf5
+      - name: dbt_expectations_expect_table__ac1da4a7b49aeea7350913219dcb0bf5
+        tests:
+          - dbt_expectations.expect_table_row_count_to_be_between:
+              min_value: >
+                {{dbt_expectations._get_column_list(ref('data_test'))|length}}
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 4
+        # expect 1 row containing at least the count of columns for both tables
+        # values are stored expect_table_column_count_to_equal_other_table c0a3de97b1f744c65e3d2e715bed42d7
       - name: dbt_expectations_expect_table__c0a3de97b1f744c65e3d2e715bed42d7
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
-          - dbt_expectations.expect_table_column_count_to_equal:
-              value: 2
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 2
         # values are stored 5fc27ea873e18b1e9ddc0a7aa6dbcd77
       - name: dbt_expectations_expect_table__5fc27ea873e18b1e9ddc0a7aa6dbcd77
         tests:
