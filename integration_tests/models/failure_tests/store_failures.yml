@@ -125,8 +125,8 @@ sources:
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('timeseries_data')
         # expect 1 row containing at least the column type
-        # values are stored expect_column_values_to_be_in_type_list aa2f35c87625a42aa8f95fde5849e2f6
-      - name: dbt_expectations_expect_column_aa2f35c87625a42aa8f95fde5849e2f6
+        # values are stored expect_column_values_to_be_in_type_list 591730e10176430d14676892ea41619c
+      - name: dbt_expectations_expect_column_591730e10176430d14676892ea41619c
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1
@@ -176,8 +176,8 @@ sources:
           - dbt_expectations.expect_table_column_count_to_be_between:
               min_value: 1
         # expect 1 row containing at least the actual type of the input column
-        # values are stored expect_column_values_to_be_of_type 6a0ca8675c186627894f397e6af82160
-      - name: dbt_expectations_expect_column_6a0ca8675c186627894f397e6af82160
+        # values are stored expect_column_values_to_be_of_type fbf4f97555b79e53422b2c377446a31a
+      - name: dbt_expectations_expect_column_fbf4f97555b79e53422b2c377446a31a
         tests:
           - dbt_expectations.expect_table_row_count_to_equal:
               value: 1

@@ -7,7 +7,7 @@ models:
             # match email address
           - dbt_expectations.expect_column_values_to_match_regex:
               regex: "@[^.]*"
-            # doesn't match number, [should store failing rows](#50fe8158b4b65c99f8593f7471f8d775)
+            # doesn't match number (#50fe8158b4b65c99f8593f7471f8d775)
           - dbt_expectations.expect_column_values_to_match_regex:
               regex: "%[^.]*"
               config:
@@ -42,7 +42,7 @@ models:
             # do not match other non-email string, should pass
           - dbt_expectations.expect_column_values_to_not_match_regex:
               regex: "&[^.]*"
-            # match email string, [should store failing rows](#b4b9840924c5c3e876fc0ade7e089cd3)
+            # match email string (#b4b9840924c5c3e876fc0ade7e089cd3)
           - dbt_expectations.expect_column_values_to_not_match_regex:
               regex: "[^.]*@"
               config:
@@ -67,7 +67,7 @@ models:
             # do match one of email address or other non-email string
           - dbt_expectations.expect_column_values_to_match_regex_list:
               regex_list: ["@[^.]*", "&[^.]*"]
-            # do not match one of non-email string, [should store failing rows](#f674e5dfe4d52219da8040028b6cdb19)
+            # do not match one of non-email string (#f674e5dfe4d52219da8040028b6cdb19)
           - dbt_expectations.expect_column_values_to_match_regex_list:
               regex_list: ["%[^.]*", "&[^.]*"]
               config:
@@ -95,7 +95,7 @@ models:
             # match email address or other string
           - dbt_expectations.expect_column_values_to_not_match_regex_list:
               regex_list: ["@[^.]*", "&[^.]*"]
-            # match email address or other string, [should store failing rows](#70f3f57594dd0b48f023ff721af3543d)
+            # match email address or other string (#70f3f57594dd0b48f023ff721af3543d)
           - dbt_expectations.expect_column_values_to_not_match_regex_list:
               regex_list: ["@[^.]*", "[^.]*@"]
               config:
@@ -137,7 +137,7 @@ models:
             # match '@' anywhere in string
           - dbt_expectations.expect_column_values_to_match_like_pattern:
               like_pattern: "%@%"
-            # do not match '@@' anywhere in string, [should store failing rows](#4429ac830680fbacf3f79efc3b9e563a)
+            # do not match '@@' anywhere in string (#4429ac830680fbacf3f79efc3b9e563a)
           - dbt_expectations.expect_column_values_to_match_like_pattern:
               like_pattern: "%@@%"
               config:
@@ -153,7 +153,7 @@ models:
             # do not match '&' anywhere in string
           - dbt_expectations.expect_column_values_to_not_match_like_pattern:
               like_pattern: "%&%"
-            # match '@' anywhere in string, [should store failing rows](#9ebeef47a6253273bb16ea1fb555f3d4)
+            # match '@' anywhere in string (#9ebeef47a6253273bb16ea1fb555f3d4)
           - dbt_expectations.expect_column_values_to_not_match_like_pattern:
               like_pattern: "%%"
               config:
@@ -169,7 +169,7 @@ models:
             # match at least one of '@' or '&' anywhere in string
           - dbt_expectations.expect_column_values_to_match_like_pattern_list:
               like_pattern_list: ["%@%", "%&%"]
-            # match at least one of '#' or '&' anywhere in string, [should store failing rows](#a46176829897335ef5b484ce3e7639c6)
+            # match at least one of '#' or '&' anywhere in string (#a46176829897335ef5b484ce3e7639c6)
           - dbt_expectations.expect_column_values_to_match_like_pattern_list:
               like_pattern_list: ["%#%", "%&%"]
               config:
@@ -186,7 +186,7 @@ models:
             # do not match at least one of '@' or '&' anywhere in string
           - dbt_expectations.expect_column_values_to_not_match_like_pattern_list:
               like_pattern_list: ["%@%", "%&%"]
-            # do match any of '@' anywhere in string, [should store failing rows](#089145ee8260c6403493de6d16d18f6d)
+            # do match any of '@' anywhere in string (#089145ee8260c6403493de6d16d18f6d)
           - dbt_expectations.expect_column_values_to_not_match_like_pattern_list:
               like_pattern_list: ["%@%", "%@%"]
               config:
@@ -262,7 +262,7 @@ models:
     tests:
       - dbt_expectations.expect_table_columns_to_match_ordered_list:
           column_list: ["date_day", "date_datetime", "date_timestamp", "row_value", "row_value_log"]
-        # expect column order to be incorrect, [should store failing rows](#3bd6bcfa1e483bf563d0c6b6ff125548)
+        # expect column order to be incorrect (#3bd6bcfa1e483bf563d0c6b6ff125548)
       - dbt_expectations.expect_table_columns_to_match_ordered_list:
           column_list: ["date_timestamp", "row_value", "date_day", "date_datetime", "row_value_log"]
           config:
@@ -273,7 +273,7 @@ models:
           column_name: date_day
           compare_model: ref("timeseries_data_extended")
           compare_column_name: date_day
-        # expect distinct count to be different, [should store failing rows](#6029c8216b74899244b808c16a83c95e)
+        # expect distinct count to be different (#6029c8216b74899244b808c16a83c95e)
       - dbt_expectations.expect_column_distinct_count_to_equal_other_table:
           column_name: date_day
           compare_model: ref("timeseries_data_extended")
@@ -285,7 +285,7 @@ models:
       - dbt_expectations.expect_row_values_to_have_data_for_every_n_datepart:
           date_col: date_day
           date_part: day
-        # expect row values to not have data for every year, [should store failing rows](#c156bf23e00131cf1e530433ab681fef)
+        # expect row values to not have data for every year (#c156bf23e00131cf1e530433ab681fef)
       - dbt_expectations.expect_row_values_to_have_data_for_every_n_datepart:
           date_col: date_day
           date_part: year
@@ -310,7 +310,7 @@ models:
           - dbt_expectations.expect_row_values_to_have_recent_data:
               datepart: day
               interval: 1
-              # expect row values to have dated data, [should store failing rows](#252ae16f60f705db85ba7e3cdf93dd8c) 
+              # expect row values to have dated data (#252ae16f60f705db85ba7e3cdf93dd8c) 
           - dbt_expectations.expect_row_values_to_have_recent_data:
               datepart: year
               interval: 0
@@ -320,16 +320,16 @@ models:
                 warn_if: =0
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list: [date, "{{ dbt_expectations.type_timestamp() }}"]
-            # expect column values to not be in list, [should store failing rows](#aa2f35c87625a42aa8f95fde5849e2f6) 
+            # expect column values to not be in list (#591730e10176430d14676892ea41619c) 
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list: ['{{ dbt.type_string() }}', "{{ dbt_expectations.type_timestamp() }}"]
+              tags: [failing_test]
               config:
                 store_failures: true
                 severity: warn
-                warn_if: =0
           - dbt_expectations.expect_column_values_to_be_increasing:
               sort_column: date_day
-            # expect column values to not be increasing, [should store failing rows](#67235c57a1e55a762011593efba42b12) 
+            # expect column values to not be increasing (#67235c57a1e55a762011593efba42b12) 
           - dbt_expectations.expect_column_values_to_be_increasing:
               sort_column: row_value
               config:
@@ -362,7 +362,7 @@ models:
           - dbt_expectations.expect_column_values_to_be_within_n_stdevs:
               group_by: ["date_day"]
               sigma_threshold: 6
-            # expect column values to be outside the threshold, [should store failing rows](#50ff354a7d05e4ab267e187b30a31282) 
+            # expect column values to be outside the threshold (#50ff354a7d05e4ab267e187b30a31282) 
           - dbt_expectations.expect_column_values_to_be_within_n_stdevs:
               group_by: ["date_day"]
               sigma_threshold: 1
@@ -370,7 +370,7 @@ models:
                 store_failures: true
                 severity: warn
                 warn_if: =0
-            # expect all column values to be outside the threshold, [should store failing rows](#bba8faaa81a4109abd9287b2c176e093) 
+            # expect all column values to be outside the threshold (#bba8faaa81a4109abd9287b2c176e093) 
           - dbt_expectations.expect_column_values_to_be_within_n_stdevs:
               group_by: ["date_day"]
               sigma_threshold: -1000
@@ -383,7 +383,7 @@ models:
               sigma_threshold: 6
               take_logs: true
               severity: warn
-            # expect column values to be outside the moving stdev, [should store failing rows](#358fc6ef8e5314e8f961d04fb0e0d443) 
+            # expect column values to be outside the moving stdev (#358fc6ef8e5314e8f961d04fb0e0d443) 
           - dbt_expectations.expect_column_values_to_be_within_n_moving_stdevs:
               date_column_name: date_day
               sigma_threshold: 1
@@ -414,7 +414,7 @@ models:
           expression: count(distinct date_day)
           compare_expression: count(*)
           compare_model: ref("timeseries_data")
-        # expect table aggregation to differ, [should store failing rows](#b5065108d1d40dc0d13303cca58d360a) 
+        # expect table aggregation to differ (#b5065108d1d40dc0d13303cca58d360a) 
       - dbt_expectations.expect_table_aggregation_to_equal_other_table:
           expression: count(distinct round(row_value))
           compare_expression: count(*)
@@ -433,14 +433,12 @@ models:
 
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: "{{ dbt_expectations.type_datetime() }}"
-            # expect column types to be incorrect, [should store failing rows](#6a0ca8675c186627894f397e6af82160) 
+            # expect column types to be incorrect (#fbf4f97555b79e53422b2c377446a31a) 
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: "{{ dbt.type_string() }}"
-              tags: [failing_test]
               config:
                 store_failures: true
                 severity: warn
-                warn_if: =0
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list: [date, "{{ dbt_expectations.type_datetime() }}"]
 
@@ -449,7 +447,7 @@ models:
           - dbt_expectations.expect_column_distinct_count_to_equal:
               row_condition: date_day = {{ dbt_date.yesterday() }}
               value: 10
-            # expect column distinct count to not be equal to, [should store failing rows](#96846a820a22f54463c2b71ef9cb339a) 
+            # expect column distinct count to not be equal to (#96846a820a22f54463c2b71ef9cb339a) 
           - dbt_expectations.expect_column_distinct_count_to_equal:
               row_condition: date_day = {{ dbt_date.yesterday() }}
               value: 11
@@ -460,7 +458,7 @@ models:
           - dbt_expectations.expect_column_distinct_count_to_be_greater_than:
               row_condition: date_day = {{ dbt_date.yesterday() }}
               value: 1
-            # expect column distinct count to not be greater than, [should store failing rows](#96846a820a22f54463c2b71ef9cb339a) 
+            # expect column distinct count to not be greater than (#96846a820a22f54463c2b71ef9cb339a) 
           - dbt_expectations.expect_column_distinct_count_to_be_greater_than:
               row_condition: date_day = {{ dbt_date.yesterday() }}
               value: 11
@@ -470,8 +468,9 @@ models:
                 warn_if: =0
           - dbt_expectations.expect_column_distinct_count_to_be_less_than:
               value: 11
+              tags: [failing_test]
               row_condition: date_day = {{ dbt_date.yesterday() }}
-            # expect column distinct count to not be less than, [should store failing rows](#bca42b761f1bfba2a0464d6c2c382400) 
+            # expect column distinct count to not be less than (#bca42b761f1bfba2a0464d6c2c382400) 
           - dbt_expectations.expect_column_distinct_count_to_be_less_than:
               value: 1
               row_condition: date_day = {{ dbt_date.yesterday() }}
@@ -524,7 +523,7 @@ models:
     tests:
       - dbt_expectations.expect_compound_columns_to_be_unique:
           column_list: ["date_col", "col_string_b"]
-        # expect compound columns to be non-unique, [should store failing rows](#28570c72b44e2dcf4eedbd31dcef5f0c) 
+        # expect compound columns to be non-unique (#28570c72b44e2dcf4eedbd31dcef5f0c) 
       - dbt_expectations.expect_compound_columns_to_be_unique:
           column_list: ["col_numeric_a", "col_numeric_b"]
           config:
@@ -554,7 +553,7 @@ models:
           ignore_row_if: "all_values_are_missing"
       - dbt_expectations.expect_table_row_count_to_equal:
           value: 4
-        # expect row count to not be equal, [should store failing rows](#row_count_to_equal_data_test__4) 
+        # expect row count to not be equal (#row_count_to_equal_data_test__4) 
       - dbt_expectations.expect_table_row_count_to_equal:
           value: -4
           config:
@@ -564,7 +563,7 @@ models:
       - dbt_expectations.expect_table_row_count_to_be_between:
           min_value: 1
           max_value: 4
-        # expect row count to not be between, [should store failing rows](#6a676b6265533cbfb045f2e0c76d7fb4) 
+        # expect row count to not be between (#6a676b6265533cbfb045f2e0c76d7fb4) 
       - dbt_expectations.expect_table_row_count_to_be_between:
           min_value: -8
           max_value: -4
@@ -580,7 +579,7 @@ models:
           compare_model: ref("data_test")
           row_condition: 1=1
           compare_row_condition: 1=1
-        # expect row counts to not be equals, [should store failing rows](#830445dfcdfe97274bbaaebe666a49f9) 
+        # expect row counts to not be equals (#830445dfcdfe97274bbaaebe666a49f9) 
       - dbt_expectations.expect_table_row_count_to_equal_other_table:
           compare_model: ref("data_test")
           row_condition: 1=1
@@ -591,7 +590,7 @@ models:
                 warn_if: =0
       - dbt_expectations.expect_table_column_count_to_equal:
           value: 8
-        # expect column count to not be equal, [should store failing rows](#5d8af86142e455acf893fdb79954e8d5) 
+        # expect column count to not be equal (#5d8af86142e455acf893fdb79954e8d5) 
       - dbt_expectations.expect_table_column_count_to_equal:
           value: -8
           config:
@@ -601,7 +600,7 @@ models:
       - dbt_expectations.expect_table_column_count_to_be_between:
           min_value: 1
           max_value: 10
-        # expect column count to not be between, [should store failing rows](#7b683c0fd621761bf32ea9c77a1207cd) 
+        # expect column count to not be between (#7b683c0fd621761bf32ea9c77a1207cd) 
       - dbt_expectations.expect_table_column_count_to_be_between:
           min_value: -10
           max_value: -1
@@ -615,7 +614,7 @@ models:
           max_value: 10
       - dbt_expectations.expect_table_columns_to_contain_set:
           column_list: ["col_numeric_b", "col_string_a"]
-        # expect table columns to not contain set, [should store failing rows](#3342f886eb20425d4023c50b6c264cc5) 
+        # expect table columns to not contain set (#3342f886eb20425d4023c50b6c264cc5) 
       - dbt_expectations.expect_table_columns_to_contain_set:
           column_list: ["col_not_in_table_a", "col_not_in_table_b"]
           config:
@@ -624,7 +623,7 @@ models:
                 warn_if: =0
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list: ["idx", "date_col", "col_numeric_a", "col_numeric_b", "col_string_a", "col_string_b", "col_null", "col_null_2"]
-        # expect table columns to not match set, [should store failing rows](#c6bdddebe1aa529d2136436d76dfd145) 
+        # expect table columns to not match set (#c6bdddebe1aa529d2136436d76dfd145) 
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list: ["col_not_in_table_a", "col_not_in_table_b", "date_col"]
           config:
@@ -633,14 +632,14 @@ models:
                 warn_if: =0
       - dbt_expectations.expect_table_columns_to_match_ordered_list:
           column_list: ["idx", "date_col", "col_numeric_a", "col_numeric_b", "col_string_a", "col_string_b", "col_null", "col_null_2"]
-        # expect table columns to not match ordered list because of the missing column, [should store failing rows](#2cb530c665a8cf00ce1964d02e863282) 
+        # expect table columns to not match ordered list because of the missing column (#2cb530c665a8cf00ce1964d02e863282) 
       - dbt_expectations.expect_table_columns_to_match_ordered_list:
           column_list: ["idx", "date_col", "col_numeric_a", "col_numeric_b", "col_string_a", "col_string_b", "col_null"]
           config:
                 store_failures: true
                 severity: warn
                 warn_if: =0
-        # expect table columns to not match ordered list because of the extra column, [should store failing rows](#ac1da4a7b49aeea7350913219dcb0bf5) 
+        # expect table columns to not match ordered list because of the extra column (#ac1da4a7b49aeea7350913219dcb0bf5) 
       - dbt_expectations.expect_table_columns_to_match_ordered_list:
           column_list: ["idx", "date_col", "col_numeric_a", "col_numeric_b", "col_string_a", "col_string_b", "col_null", "col_null_2", "extra_column"]
           config:
@@ -649,7 +648,7 @@ models:
                 warn_if: =0
       - dbt_expectations.expect_table_column_count_to_equal_other_table:
           compare_model: ref("data_test")
-        # expect table column count to not match other table, [should store failing rows](#c0a3de97b1f744c65e3d2e715bed42d7) 
+        # expect table column count to not match other table (#c0a3de97b1f744c65e3d2e715bed42d7) 
       - dbt_expectations.expect_table_column_count_to_equal_other_table:
           compare_model: ref("timeseries_data")
           config:
@@ -658,7 +657,7 @@ models:
                 warn_if: =0
       - dbt_expectations.expect_table_columns_to_not_contain_set:
           column_list: ["col_numeric_c", "col_string_d"]
-        # expect table columns to not contain set, [should store failing rows](#5fc27ea873e18b1e9ddc0a7aa6dbcd77) 
+        # expect table columns to not contain set (#5fc27ea873e18b1e9ddc0a7aa6dbcd77) 
       - dbt_expectations.expect_table_columns_to_not_contain_set:
           column_list: ["col_numeric_a", "col_string_b"]
           config:
@@ -667,7 +666,7 @@ models:
                 warn_if: =0
       - dbt_expectations.expression_is_true:
           expression: (col_numeric_a + col_numeric_b = 1)
-        # expect expression to be false, [should store failing rows](#2b3df2f34bfbadac00cbf5c1d2fc43b9) 
+        # expect expression to be false (#2b3df2f34bfbadac00cbf5c1d2fc43b9) 
       - dbt_expectations.expression_is_true:
           expression: (col_numeric_a + col_numeric_b <> 1)
           config:
@@ -678,7 +677,7 @@ models:
           expression: sum(col_numeric_a)
           compare_model: ref("data_test")
           group_by: [idx]
-        # expect expression to not be equal, [should store failing rows](#eac1c69bfe238e77061867aa8fe4bc02) 
+        # expect expression to not be equal (#eac1c69bfe238e77061867aa8fe4bc02) 
       - dbt_expectations.equal_expression:
           expression: sum(col_numeric_a)
           compare_model: ref("data_test")
@@ -704,7 +703,7 @@ models:
           column_A: col_numeric_a
           column_B: col_numeric_b
           value_pairs_set: [[0, 1], [1, 0], [0.5, 0.5], [0.5, 0.5]]
-        # expect column pair values to not be in set, [should store failing rows](#31eeee5db90e215e53b91d7802a0ea4a) 
+        # expect column pair values to not be in set (#31eeee5db90e215e53b91d7802a0ea4a) 
       - dbt_expectations.expect_column_pair_values_to_be_in_set:
           column_A: col_numeric_a
           column_B: col_numeric_b
@@ -720,7 +719,7 @@ models:
       - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
           column_A: col_numeric_a+10
           column_B: col_numeric_a
-        # expect column pair values A to not be greater than B, [should store failing rows](#59560feb2fa77921ad441cae8ab09d72) 
+        # expect column pair values A to not be greater than B (#59560feb2fa77921ad441cae8ab09d72) 
       - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
           column_A: col_numeric_a-10
           column_B: col_numeric_a
@@ -732,7 +731,7 @@ models:
           column_A: col_numeric_a
           column_B: col_numeric_a
           or_equal: True
-        # expect column pair values to not be equal, [should store failing rows](#fbceee675139638784e5eac9adc73339) 
+        # expect column pair values to not be equal (#fbceee675139638784e5eac9adc73339) 
       - dbt_expectations.expect_column_pair_values_to_be_equal:
           column_A: col_numeric_a
           column_B: col_numeric_b
@@ -743,7 +742,7 @@ models:
       - dbt_expectations.expect_select_column_values_to_be_unique_within_record:
           column_list: ["col_string_a", "col_string_b"]
           ignore_row_if: "any_value_is_missing"
-        # expect column values to not be unique within record, [should store failing rows](#7ef8e1ed87e706f35aa7290c74f52dc0) 
+        # expect column values to not be unique within record (#7ef8e1ed87e706f35aa7290c74f52dc0) 
       - dbt_expectations.expect_select_column_values_to_be_unique_within_record:
           column_list: ["col_numeric_a", "col_numeric_b"]
           ignore_row_if: "any_value_is_missing"
@@ -754,7 +753,7 @@ models:
       - dbt_expectations.expect_multicolumn_sum_to_equal:
           column_list: ["col_numeric_a", "col_numeric_b"]
           sum_total: 4
-        # expect multicolumn sum to not be equal, [should store failing rows](#fd100321a81851ad272526f368d35013) 
+        # expect multicolumn sum to not be equal (#fd100321a81851ad272526f368d35013) 
       - dbt_expectations.expect_multicolumn_sum_to_equal:
           column_list: ["col_numeric_a", "col_numeric_b"]
           sum_total: 2
@@ -768,7 +767,7 @@ models:
         tests:
           - dbt_expectations.expect_column_to_exist:
               column_index: 1
-            # expect column to not exist, [should store failing rows](#to_exist_data_test_3__idx) 
+            # expect column to not exist (#to_exist_data_test_3__idx) 
           - dbt_expectations.expect_column_to_exist:
               column_index: 3
               config:
@@ -781,7 +780,7 @@ models:
 
       - name: col_numeric_a
         tests:
-            # expect column to not be unique, [should store failing rows](#683340919b30c10769325ec1dc2f5443) 
+            # expect column to not be unique (#683340919b30c10769325ec1dc2f5443) 
           - dbt_expectations.expect_column_values_to_be_unique:
               config:
                 store_failures: true
@@ -791,7 +790,7 @@ models:
           - dbt_expectations.expect_column_to_exist:
               column_index: 3
           - dbt_expectations.expect_column_values_to_not_be_null
-            # expect column to not be null, [should store failing rows](#da3f47cfcf69ebfd61e7a593b71bddde) 
+            # expect column to not be null (#da3f47cfcf69ebfd61e7a593b71bddde) 
           - dbt_expectations.expect_column_values_to_be_null:
               config:
                 store_failures: true
@@ -800,7 +799,7 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 1
-            # expect column to not be between, [should store failing rows](#96cb223a4fc2ab2eb9cce2d35de11cee) 
+            # expect column to not be between (#96cb223a4fc2ab2eb9cce2d35de11cee) 
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: -10
               max_value: -1
@@ -813,7 +812,7 @@ models:
           - dbt_expectations.expect_column_sum_to_be_between:
               min_value: 1
               max_value: 3
-            # expect column sum to not be between, [should store failing rows](#3724830b8755038cce647e3fd0ea99f0) 
+            # expect column sum to not be between (#3724830b8755038cce647e3fd0ea99f0) 
           - dbt_expectations.expect_column_sum_to_be_between:
               min_value: -3
               max_value: -1
@@ -824,7 +823,7 @@ models:
           - dbt_expectations.expect_column_min_to_be_between:
               min_value: 0
               max_value: 0
-            # expect column min to not be between, [should store failing rows](#9aac4a0c8037304da4bde87f262c359a) 
+            # expect column min to not be between (#9aac4a0c8037304da4bde87f262c359a) 
           - dbt_expectations.expect_column_min_to_be_between:
               min_value: 10
               max_value: 10
@@ -835,7 +834,7 @@ models:
           - dbt_expectations.expect_column_max_to_be_between:
               min_value: 1
               max_value: 1
-            # expect column max to not be between, [should store failing rows](#ccbfbecef990c630900ebd228864e259) 
+            # expect column max to not be between (#ccbfbecef990c630900ebd228864e259) 
           - dbt_expectations.expect_column_max_to_be_between:
               min_value: 0
               max_value: 0
@@ -846,7 +845,7 @@ models:
           - dbt_expectations.expect_column_mean_to_be_between:
               min_value: 0
               max_value: 1.5
-            # expect column mean to not be between, [should store failing rows](#c44393b3bfa1d3815a69c25700611d84) 
+            # expect column mean to not be between (#c44393b3bfa1d3815a69c25700611d84) 
           - dbt_expectations.expect_column_mean_to_be_between:
               min_value: -1
               max_value: -0.5
@@ -857,7 +856,7 @@ models:
           - dbt_expectations.expect_column_median_to_be_between:
               min_value: 0
               max_value: 1.5
-            # expect column mean to not be between, [should store failing rows](#4598f17173411df4d8481a6cd49b96f7) 
+            # expect column mean to not be between (#4598f17173411df4d8481a6cd49b96f7) 
           - dbt_expectations.expect_column_median_to_be_between:
               min_value: -1
               max_value: -0.5
@@ -868,7 +867,7 @@ models:
           - dbt_expectations.expect_column_unique_value_count_to_be_between:
               min_value: 3
               max_value: 3
-            # expect column unique value count to not be between, [should store failing rows](#6bbef2085898475d0b834e75ee32a119) 
+            # expect column unique value count to not be between (#6bbef2085898475d0b834e75ee32a119) 
           - dbt_expectations.expect_column_unique_value_count_to_be_between:
               min_value: 1
               max_value: 1
@@ -879,7 +878,7 @@ models:
           - dbt_expectations.expect_column_proportion_of_unique_values_to_be_between:
               min_value: 0
               max_value: .75
-            # expect column proportion of unique values to not be between, [should store failing rows](#658e7ed17f0276211f084b4a11a19220) 
+            # expect column proportion of unique values to not be between (#658e7ed17f0276211f084b4a11a19220) 
           - dbt_expectations.expect_column_proportion_of_unique_values_to_be_between:
               min_value: -1
               max_value: -.75
@@ -890,7 +889,7 @@ models:
           - dbt_expectations.expect_column_stdev_to_be_between:
               min_value: 0
               max_value: 2
-            # expect column stdev to not be between, [should store failing rows](#4d2013b3a6baaffcb69986864aa5b6e4) 
+            # expect column stdev to not be between (#4d2013b3a6baaffcb69986864aa5b6e4) 
           - dbt_expectations.expect_column_stdev_to_be_between:
               min_value: -10
               max_value: -2
@@ -905,7 +904,7 @@ models:
               value_set: [0.5]
               top_n: 1
               quote_values: false
-            # expect column most common value to not be in set, [should store failing rows](#65993ad5cd85d2b007d862fd9c2ac8f5) 
+            # expect column most common value to not be in set (#65993ad5cd85d2b007d862fd9c2ac8f5) 
           - dbt_expectations.expect_column_most_common_value_to_be_in_set:
               value_set: [0.0]
               top_n: 1
@@ -924,7 +923,7 @@ models:
           - dbt_expectations.expect_column_values_to_be_in_set:
               value_set: ['a', 'b', 'c']
               quote_values: true
-            # expect column values to not be in set, [should store failing rows](#14f59b141efceb67d36cefd63fb4bd37) 
+            # expect column values to not be in set (#14f59b141efceb67d36cefd63fb4bd37) 
           - dbt_expectations.expect_column_values_to_be_in_set:
               value_set: ['2','3']
               quote_values: true
@@ -935,7 +934,7 @@ models:
           - dbt_expectations.expect_column_values_to_not_be_in_set:
               value_set: ['2','3']
               quote_values: true
-            # expect column values to be in set, [should store failing rows](#50848af8004898557c3b0ab39c9f96e7) 
+            # expect column values to be in set (#50848af8004898557c3b0ab39c9f96e7) 
           - dbt_expectations.expect_column_values_to_not_be_in_set:
               value_set: ['a', 'b', 'c']
               quote_values: true
@@ -947,14 +946,14 @@ models:
               value_set: ['a','b','c','c']
           - dbt_expectations.expect_column_distinct_values_to_equal_set:
               value_set: ['a','b','c']
-            # expect column distinct values to not equal set, [should store failing rows](#c01780bae9e50480f7d344195bc45ba4) 
+            # expect column distinct values to not equal set (#c01780bae9e50480f7d344195bc45ba4) 
           - dbt_expectations.expect_column_distinct_values_to_equal_set:
               value_set: ['d','d']
               config:
                 store_failures: true
                 severity: warn
                 warn_if: =0
-            # expect column distinct values to not equal set, [should store failing rows](#6c5efd1d56ef04f10eb3aa61ba72ea62) 
+            # expect column distinct values to not equal set (#6c5efd1d56ef04f10eb3aa61ba72ea62) 
           - dbt_expectations.expect_column_distinct_values_to_equal_set:
               value_set: ['a','c']
               config:
@@ -964,7 +963,7 @@ models:
           - dbt_expectations.expect_column_distinct_values_to_be_in_set:
               value_set: ['a','b','c','d']
               quote_values: true
-            # expect column distinct values to not be in set, [should store failing rows](#b0985e035744485abd9b9352d9a9f1c5) 
+            # expect column distinct values to not be in set (#b0985e035744485abd9b9352d9a9f1c5) 
           - dbt_expectations.expect_column_distinct_values_to_be_in_set:
               value_set: ['d','e']
               quote_values: true
@@ -974,7 +973,7 @@ models:
                 warn_if: =0
           - dbt_expectations.expect_column_distinct_values_to_contain_set:
               value_set: ['a','b']
-            # expect column distinct values to not contain set, [should store failing rows](#217ad937606b61f2d304371afdcd55f9) 
+            # expect column distinct values to not contain set (#217ad937606b61f2d304371afdcd55f9) 
           - dbt_expectations.expect_column_distinct_values_to_contain_set:
               value_set: ['d','e']
               config:
@@ -983,7 +982,7 @@ models:
                 warn_if: =0
           - dbt_expectations.expect_column_value_lengths_to_equal:
               value: 1
-            # expect column value length to not equal, [should store failing rows](#0b59a422d382479dd5ad936a46a8fcb2) 
+            # expect column value length to not equal (#0b59a422d382479dd5ad936a46a8fcb2) 
           - dbt_expectations.expect_column_value_lengths_to_equal:
               value: 0
               config:
@@ -1004,7 +1003,7 @@ models:
           - dbt_expectations.expect_column_value_lengths_to_be_between:
               min_value: 1
               max_value: 4
-            # expect column value lengths to not be between, [should store failing rows](#06cc6a8f1b954e82b6a9583c93d0907b) 
+            # expect column value lengths to not be between (#06cc6a8f1b954e82b6a9583c93d0907b) 
           - dbt_expectations.expect_column_value_lengths_to_be_between:
               min_value: -10
               max_value: -4
@@ -1020,7 +1019,7 @@ models:
       - name: col_null
         tests:
           - dbt_expectations.expect_column_values_to_be_null
-            # expect column to be null, [should store failing rows](#8f4d07f8f9e2d1910d6437cd0fe13d13) 
+            # expect column to be null (#8f4d07f8f9e2d1910d6437cd0fe13d13) 
           - dbt_expectations.expect_column_values_to_not_be_null:
                config:
                 store_failures: true
@@ -1032,7 +1031,7 @@ models:
       - dbt_expectations.expect_table_row_count_to_equal_other_table_times_factor:
           compare_model: ref("data_test")
           factor: 2
-        # expect column to not be factor 1, [should store failing rows](#10c6fb9b520d55aeccfe157038c088cb) 
+        # expect column to not be factor 1 (#10c6fb9b520d55aeccfe157038c088cb) 
       - dbt_expectations.expect_table_row_count_to_equal_other_table_times_factor:
           compare_model: ref("data_test")
           factor: 1
@@ -1065,7 +1064,7 @@ models:
           timestamp_column: date_timestamp
           datepart: day
           interval: 1
-        # expect groups to not have recent data with negative interval, [should store failing rows](#5cd0609947ef37a954a97ba4b0f9a696) 
+        # expect groups to not have recent data with negative interval (#5cd0609947ef37a954a97ba4b0f9a696) 
       - dbt_expectations.expect_grouped_row_values_to_have_recent_data:
           group_by: [group_id]
           timestamp_column: date_timestamp
@@ -1124,7 +1123,7 @@ models:
               group_by: ['idx']
               strictly: true
               sort_column: date_col
-            # expect column values to not be decreasing, [should store failing rows](#3c87a2adb0955d0e55f2d18e9536f40b) 
+            # expect column values to not be decreasing (#3c87a2adb0955d0e55f2d18e9536f40b) 
           - dbt_expectations.expect_column_values_to_be_decreasing:
               group_by: ['idx']
               strictly: true
@@ -1139,7 +1138,7 @@ models:
               group_by: ['idx']
               strictly: true
               sort_column: date_col
-            # expect column values to not be decreasing, [should store failing rows](#1bea8a96eeb4ae8c4c65724604a7271f) 
+            # expect column values to not be decreasing (#1bea8a96eeb4ae8c4c65724604a7271f) 
           - dbt_expectations.expect_column_values_to_be_increasing:
               group_by: ['idx']
               strictly: true
