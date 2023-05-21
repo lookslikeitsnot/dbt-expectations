@@ -1,5 +1,7 @@
 {%- test expect_table_column_count_to_equal(model, value) -%}
-{%- if execute -%}
+{%- if not execute -%}
+    {{ return('') }}
+{%- endif -%}
 {%- set number_actual_columns = (adapter.get_columns_in_relation(model) | length) -%}
 with test_data as (
 
@@ -7,10 +9,15 @@ with test_data as (
         {{ number_actual_columns }} as number_actual_columns,
         {{ value }} as value
 
+),
+validation_errors as (
+    
+    select *
+    from test_data
+    where
+        number_actual_columns != value
 )
-select *
-from test_data
-where
-    number_actual_columns != value
-{%- endif -%}
+select * 
+from validation_errors
+
 {%- endtest -%}

@@ -68,7 +68,8 @@ verbose_validation_errors as (
     
    
 )
-select * from 
+select * 
+from 
 {% if should_store_failures() -%}
     verbose_validation_errors
 {%- else -%}

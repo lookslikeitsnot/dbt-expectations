@@ -7,7 +7,9 @@
     "You have to provide either a min_value, max_value or both."
 ) }}
 {%- endif -%}
-{%- if execute -%}
+{%- if not execute -%}
+    {{ return('') }}
+{%- endif -%}
 {%- set number_actual_columns = (adapter.get_columns_in_relation(model) | length) -%}
 
 {%- set expression %}
@@ -24,10 +26,14 @@ with test_data as (
         {{ min_value if min_value else 0 }} as min_value,
         {{ max_value if max_value else 0 }} as max_value
 
+),
+validation_errors as (
+    select *
+    from test_data
+    where
+        not {{ expression }}
 )
-select *
-from test_data
-where
-    not {{ expression }}
-{%- endif -%}
+select * 
+from validation_errors
+
 {%- endtest -%}

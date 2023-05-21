@@ -62,7 +62,8 @@ verbose_validation_errors as (
     ve.col_{{ loop.index }} is not null {% if not loop.last %} and {% endif %}
     {%- endfor %} 
 )
-select * from 
+select * 
+from 
 {% if should_store_failures() -%}
     verbose_validation_errors
 {%- else -%}

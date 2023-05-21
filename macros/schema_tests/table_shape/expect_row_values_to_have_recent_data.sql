@@ -45,7 +45,8 @@ verbose_validation_errors as (
     on ve.max_timestamp = cast(model_.{{ column_name }} as {{ dbt_expectations.type_timestamp() }})
     where ve.max_timestamp is not null   
 )
-select * from 
+select * 
+from 
 {% if should_store_failures() -%}
     verbose_validation_errors
 {%- else -%}

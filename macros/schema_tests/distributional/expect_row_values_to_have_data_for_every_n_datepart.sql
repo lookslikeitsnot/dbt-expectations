@@ -6,9 +6,9 @@
                                                             exclusion_condition=None,
                                                             test_start_date=None,
                                                             test_end_date=None) -%}
-{% if not execute %}
+{%- if not execute -%}
     {{ return('') }}
-{% endif %}
+{%- endif -%}
 
 {% if not test_start_date or not test_end_date %}
     {% set sql %}

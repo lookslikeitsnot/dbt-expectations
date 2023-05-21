@@ -1,7 +1,7 @@
 {%- test expect_table_columns_to_match_ordered_list(model, column_list, transform="upper") -%}
-{% if not execute %}
+{%- if not execute -%}
     {{ return('') }}
-{% endif %}
+{%- endif -%}
 {%- set column_list = column_list | map(transform) | list -%}
 {%- set relation_column_names = dbt_expectations._get_column_list(model, transform) -%}
 with relation_columns as (

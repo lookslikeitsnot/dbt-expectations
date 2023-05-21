@@ -327,6 +327,7 @@ models:
               config:
                 store_failures: true
                 severity: warn
+                warn_if: =0
           - dbt_expectations.expect_column_values_to_be_increasing:
               sort_column: date_day
             # expect column values to not be increasing (#67235c57a1e55a762011593efba42b12) 
@@ -439,6 +440,7 @@ models:
               config:
                 store_failures: true
                 severity: warn
+                warn_if: =0
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list: [date, "{{ dbt_expectations.type_datetime() }}"]
 
@@ -856,8 +858,21 @@ models:
           - dbt_expectations.expect_column_median_to_be_between:
               min_value: 0
               max_value: 1.5
-            # expect column mean to not be between (#4598f17173411df4d8481a6cd49b96f7) 
+            # expect column mean to not be between negative values (#4598f17173411df4d8481a6cd49b96f7) 
           - dbt_expectations.expect_column_median_to_be_between:
+              min_value: -1
+              max_value: -0.5
+              config:
+                store_failures: true
+                severity: warn
+                warn_if: =0
+          - dbt_expectations.expect_column_quantile_values_to_be_between:
+              quantile: .95
+              min_value: 0
+              max_value: 1.5
+            # expect column quantile to not be between negative values (#cf8274218b6b743a0109a008f48b24e5) 
+          - dbt_expectations.expect_column_quantile_values_to_be_between:
+              quantile: .95
               min_value: -1
               max_value: -0.5
               config:

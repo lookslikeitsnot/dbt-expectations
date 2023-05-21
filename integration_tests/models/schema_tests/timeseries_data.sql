@@ -1,6 +1,6 @@
 with dates as (
 
-    select * from {{ ref('timeseries_base') }}
+    select cast(date_day as {{ dbt_expectations.type_datetime() }}) from {{ ref('timeseries_base') }}
 
 ),
 add_row_values as (

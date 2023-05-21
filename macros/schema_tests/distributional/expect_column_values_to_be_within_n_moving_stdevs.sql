@@ -166,7 +166,8 @@ verbose_validation_errors as (
     where ve_cnt.cnt > 0 
     {%- endif -%}
 )
-select * from  
+select * 
+from  
 {% if should_store_failures() -%}
     verbose_validation_errors
 {%- else -%}

@@ -93,7 +93,8 @@ verbose_validation_errors as (
     from verbose_grouped_expression
     where not(expression {{ test_condition }})
 )
-select * from 
+select * 
+from 
 {% if should_store_failures() -%}
     verbose_validation_errors
 {%- else -%}

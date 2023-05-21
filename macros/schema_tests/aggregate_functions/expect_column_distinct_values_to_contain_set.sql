@@ -53,7 +53,8 @@ verbose_validation_errors as (
     where model_.{{column_name}} not in (select * from validation_errors)
    
 )
-select * from 
+select * 
+from 
 {% if should_store_failures() -%}
     verbose_validation_errors
 {%- else -%}

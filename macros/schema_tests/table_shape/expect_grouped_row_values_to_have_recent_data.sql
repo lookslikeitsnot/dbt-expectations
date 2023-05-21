@@ -89,5 +89,7 @@ validation_errors as (
         t.join_key is not null
 
 )
-select * from validation_errors
+select * 
+from validation_errors
+
 {% endmacro %}

@@ -456,6 +456,14 @@ sources:
               value: 1
           - dbt_expectations.expect_table_column_count_to_be_between:
               min_value: 1
+        # expect 1 row containing at least the quantile value of the column
+        # values are stored expect_column_quantile_values_to_be_between cf8274218b6b743a0109a008f48b24e5
+      - name: dbt_expectations_expect_column_cf8274218b6b743a0109a008f48b24e5
+        tests:
+          - dbt_expectations.expect_table_row_count_to_equal:
+              value: 1
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 1
         # expect 1 row containing at least the count of distinct values of the column
         # values are stored expect_column_unique_value_count_to_be_between 6bbef2085898475d0b834e75ee32a119
       - name: dbt_expectations_expect_column_6bbef2085898475d0b834e75ee32a119
