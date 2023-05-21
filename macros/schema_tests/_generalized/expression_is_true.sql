@@ -43,7 +43,7 @@ with validation_errors as (
         {% endif %}
     from {{ model }} model_
     where 1=1
-{# if the expression is not an eggregation, add it as a filter in the WHERE clause #}
+{# if the expression is not an aggregation, add it as a filter in the WHERE clause #}
 {% if not all_aggregation_expressions %}
         and not(({{expression}}) {{ test_condition }})
 {% endif %}
@@ -53,9 +53,15 @@ with validation_errors as (
 {% if group_by_columns %}
     group by {{ group_by_columns | join(", ") }}
 {% endif %}
-{# if the expression is an eggregation, add it as a filter in the HAVING clause #}
+{# if the expression is an aggregation, add it as a filter in the appropriate clause #}
 {% if all_aggregation_expressions %}
-   having not(({{expression}}) {{ test_condition }})
+    {# get the appropriate grouping function #}
+    {% if dbt_expectations._is_window_expression(expression)%}
+        qualify
+    {% else %}
+        having 
+    {% endif %}
+    not(({{expression}}) {{ test_condition }})
 {% endif %}
 
 )

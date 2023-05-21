@@ -322,7 +322,7 @@ models:
               column_type_list: [date, "{{ dbt_expectations.type_timestamp() }}"]
             # expect column values to not be in list, [should store failing rows](#aa2f35c87625a42aa8f95fde5849e2f6) 
           - dbt_expectations.expect_column_values_to_be_in_type_list:
-              column_type_list: [varchar, "{{ dbt_expectations.type_timestamp() }}"]
+              column_type_list: ['{{ dbt.type_string() }}', "{{ dbt_expectations.type_timestamp() }}"]
               config:
                 store_failures: true
                 severity: warn
@@ -435,7 +435,8 @@ models:
               column_type: "{{ dbt_expectations.type_datetime() }}"
             # expect column types to be incorrect, [should store failing rows](#6a0ca8675c186627894f397e6af82160) 
           - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: "varchar"
+              column_type: "{{ dbt.type_string() }}"
+              tags: [failing_test]
               config:
                 store_failures: true
                 severity: warn
@@ -847,6 +848,17 @@ models:
               max_value: 1.5
             # expect column mean to not be between, [should store failing rows](#c44393b3bfa1d3815a69c25700611d84) 
           - dbt_expectations.expect_column_mean_to_be_between:
+              min_value: -1
+              max_value: -0.5
+              config:
+                store_failures: true
+                severity: warn
+                warn_if: =0
+          - dbt_expectations.expect_column_median_to_be_between:
+              min_value: 0
+              max_value: 1.5
+            # expect column mean to not be between, [should store failing rows](#4598f17173411df4d8481a6cd49b96f7) 
+          - dbt_expectations.expect_column_median_to_be_between:
               min_value: -1
               max_value: -0.5
               config:

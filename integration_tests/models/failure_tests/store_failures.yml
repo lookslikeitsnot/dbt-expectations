@@ -448,6 +448,14 @@ sources:
               value: 1
           - dbt_expectations.expect_table_column_count_to_be_between:
               min_value: 1
+        # expect 1 row containing at least the median of the column
+        # values are stored expect_column_median_to_be_between 4598f17173411df4d8481a6cd49b96f7
+      - name: dbt_expectations_expect_column_4598f17173411df4d8481a6cd49b96f7
+        tests:
+          - dbt_expectations.expect_table_row_count_to_equal:
+              value: 1
+          - dbt_expectations.expect_table_column_count_to_be_between:
+              min_value: 1
         # expect 1 row containing at least the count of distinct values of the column
         # values are stored expect_column_unique_value_count_to_be_between 6bbef2085898475d0b834e75ee32a119
       - name: dbt_expectations_expect_column_6bbef2085898475d0b834e75ee32a119
