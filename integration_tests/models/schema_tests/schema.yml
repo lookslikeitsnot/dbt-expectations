@@ -323,7 +323,6 @@ models:
             # expect column values to not be in list (#591730e10176430d14676892ea41619c) 
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list: ['{{ dbt.type_string() }}', "{{ dbt_expectations.type_timestamp() }}"]
-              tags: [failing_test]
               config:
                 store_failures: true
                 severity: warn
@@ -470,7 +469,6 @@ models:
                 warn_if: =0
           - dbt_expectations.expect_column_distinct_count_to_be_less_than:
               value: 11
-              tags: [failing_test]
               row_condition: date_day = {{ dbt_date.yesterday() }}
             # expect column distinct count to not be less than (#bca42b761f1bfba2a0464d6c2c382400) 
           - dbt_expectations.expect_column_distinct_count_to_be_less_than:
