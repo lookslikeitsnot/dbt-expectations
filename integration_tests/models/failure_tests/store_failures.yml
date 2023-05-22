@@ -90,6 +90,14 @@ sources:
               row_condition: "1=1"
           - dbt_expectations.expect_table_column_count_to_equal_other_table:
               compare_model: ref('data_text')
+        # expect rows for every non-case-unique record, for all model columns
+        # values are stored expect_column_values_to_have_consistent_casing 05c9a1a08f374ec48201dc35ee09e0e2
+      - name: dbt_expectations_expect_column_05c9a1a08f374ec48201dc35ee09e0e2
+        tests:
+          - dbt_expectations.expect_table_row_count_to_be_between:
+              min_value: 1
+          - dbt_expectations.expect_table_column_count_to_equal_other_table:
+              compare_model: ref('data_text')
         # expect rows for every column containing at least the name of the relation column, the name of the input column, 
         # and whether or not they're matching
         # values are stored expect_table_columns_to_match_ordered_list 3bd6bcfa1e483bf563d0c6b6ff125548

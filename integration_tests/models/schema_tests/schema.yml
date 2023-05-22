@@ -257,6 +257,14 @@ models:
               config:
                 error_if: "=0"
                 warn_if: "<4"  
+      - name: country
+        tests:
+            # expect column grouped by insensitive case to have inconstistent case across group  (#05c9a1a08f374ec48201dc35ee09e0e2)
+          - dbt_expectations.expect_column_values_to_have_consistent_casing:
+              config:
+                store_failures: true
+                severity: warn
+                warn_if: =0
   
   - name: timeseries_data
     tests:

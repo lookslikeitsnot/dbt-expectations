@@ -520,14 +520,19 @@ tests:
 
 ### [expect_column_values_to_have_consistent_casing](macros/schema_tests/column_values_basic/expect_column_values_to_have_consistent_casing.sql)
 
-Expect a column to have consistent casing. By setting `display_inconsistent_columns` to true, the number of inconsistent values in the column will be displayed in the terminal whereas the inconsistent values themselves will be returned if the SQL compiled test is run.
+Expect a column value to have consistent casing. By setting `display_inconsistent_columns` to true, the number of inconsistent values in the column will be displayed in the terminal whereas the inconsistent values themselves will be returned if the SQL compiled test is run. 
+
+**Warning**: This test doesn't check for consistent casing *across a full column*. It groups column values by ignoring the case and checks if all those groups use the same case. e.g.: 
+- a column containing 'abc' and 'DEF' will pass the test 
+- a column containing 'aBC' and 'dEf' will pass the test 
+- a column containing 'abc' and 'ABC' will fail
 
 *Applies to:* Column
 
 ```yaml
 tests:
   - dbt_expectations.expect_column_values_to_have_consistent_casing:
-      display_inconsistent_columns: false # (Optional)
+      display_inconsistent_columns: false # (Optional. Takes precedence over the store_failures config)
 ```
 
 ### [expect_column_values_to_be_in_set](macros/schema_tests/column_values_basic/expect_column_values_to_be_in_set.sql)
